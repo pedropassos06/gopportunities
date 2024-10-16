@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
+        "Debugf",
         "Errf",
         "gonic",
-        "gorm"
+        "gorm",
+        "Infof",
+        "Warningf"
     ]
 }
