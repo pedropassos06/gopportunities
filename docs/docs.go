@@ -59,7 +59,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "update a job opening",
+                "description": "Update a job opening",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,8 +72,15 @@ const docTemplate = `{
                 "summary": "Update opening",
                 "parameters": [
                     {
-                        "description": "Request body",
-                        "name": "request",
+                        "type": "string",
+                        "description": "Opening ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "Opening data to update",
+                        "name": "opening",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -96,6 +103,12 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/handler.ErrorResponse"
                         }

@@ -188,11 +188,16 @@ paths:
     put:
       consumes:
       - application/json
-      description: update a job opening
+      description: Update a job opening
       parameters:
-      - description: Request body
+      - description: Opening ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: Opening data to update
         in: body
-        name: request
+        name: opening
         required: true
         schema:
           $ref: '#/definitions/handler.UpdateOpeningRequest'
@@ -209,6 +214,10 @@ paths:
             $ref: '#/definitions/handler.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.ErrorResponse'
       summary: Update opening
