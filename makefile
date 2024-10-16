@@ -4,7 +4,7 @@
 APP_NAME=gopportunities
 
 #Tasks
-default: run
+default: run-with-docs
 
 run:
 	@go run main.go

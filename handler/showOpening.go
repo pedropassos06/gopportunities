@@ -7,6 +7,18 @@ import (
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
+// @BasePath /api/v1/
+
+// @Summary Show opening
+// @Description Show a job opening
+// @Tags Openings
+// @Accept json
+// @Produce json
+// @Param id query string true "Opening ID"
+// @Success 200 {object} ShowOpeningResponse
+// @Failure 400 {object} ErrorResponse "ID query parameter is missing"
+// @Failure 404 {object} ErrorResponse "Opening not found"
+// @Router /opening [get]
 func ShowOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
