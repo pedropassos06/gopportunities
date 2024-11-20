@@ -7,6 +7,7 @@ import (
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
+// handler for filtering listings
 func ListFilteredOpeningsHandler(ctx *gin.Context) {
 	filters := make(map[string]interface{})
 
@@ -34,6 +35,7 @@ func ListFilteredOpeningsHandler(ctx *gin.Context) {
 	sendSuccess(ctx, "list-openings", openings)
 }
 
+// filters openings based on a filters array
 func FilterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
 	var openings []schemas.Opening
 
