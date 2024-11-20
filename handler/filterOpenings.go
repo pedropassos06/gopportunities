@@ -32,7 +32,7 @@ func ListFilteredOpeningsHandler(ctx *gin.Context) {
 		return
 	}
 
-	sendSuccess(ctx, "list-openings", openings)
+	sendSuccess(ctx, "list-filtered-openings", openings)
 }
 
 // filters openings based on a filters array
