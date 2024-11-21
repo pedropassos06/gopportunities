@@ -58,7 +58,7 @@ type UpdateOpeningRequest struct {
 
 func (r *UpdateOpeningRequest) Validate() error {
 	// if any field is provided, validation is true
-	if r.Role != "" || r.Company != "" || r.Location != "" || r.TypeOfEmployment != "" || r.Salary > 0 || r.CompanyLogoUrl != "" || r.Description != nil || r.Link != "" {
+	if r.Role != "" || r.Company != "" || r.Location != "" || r.TypeOfEmployment != "" || r.Salary > 0 || r.CompanyLogoUrl != "" || r.Description != "" || r.Link != "" {
 		return nil
 	}
 
