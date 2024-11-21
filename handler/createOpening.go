@@ -31,12 +31,14 @@ func CreateOpeningHandler(ctx *gin.Context) {
 	}
 
 	opening := schemas.Opening{
-		Role:     request.Role,
-		Company:  request.Company,
-		Location: request.Location,
-		Remote:   *request.Remote,
-		Link:     request.Link,
-		Salary:   request.Salary,
+		Role:             request.Role,
+		Company:          request.Company,
+		Location:         request.Location,
+		TypeOfEmployment: request.TypeOfEmployment,
+		Salary:           request.Salary,
+		CompanyLogoUrl:   request.CompanyLogoUrl,
+		Description:      request.Description,
+		Link:             request.Link,
 	}
 
 	if err := db.Create(&opening).Error; err != nil {
