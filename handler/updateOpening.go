@@ -60,6 +60,12 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	if request.Salary <= 0 {
 		opening.Salary = request.Salary
 	}
+	if request.CompanyLogoUrl != "" {
+		opening.CompanyLogoUrl = request.CompanyLogoUrl
+	}
+	if request.Description != "" {
+		opening.Description = request.Description
+	}
 	if request.Link != "" {
 		opening.Link = request.Link
 	}
