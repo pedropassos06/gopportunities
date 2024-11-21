@@ -8,12 +8,14 @@ import (
 
 type Opening struct {
 	gorm.Model
-	Role     string
-	Company  string
-	Location string
-	Remote   bool
-	Link     string
-	Salary   int64
+	Role             string
+	Company          string
+	Location         string // remote or site
+	TypeOfEmployment string // full-time, part-time, internship
+	Salary           int64
+	CompanyLogoUrl   string
+	Description      string
+	Link             string
 }
 
 type OpeningResponse struct {
