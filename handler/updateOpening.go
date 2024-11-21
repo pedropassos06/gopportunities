@@ -54,14 +54,14 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	if request.Location != "" {
 		opening.Location = request.Location
 	}
-	if request.Remote != nil {
-		opening.Remote = *request.Remote
-	}
-	if request.Link != "" {
-		opening.Link = request.Link
+	if request.TypeOfEmployment != "" {
+		opening.TypeOfEmployment = request.TypeOfEmployment
 	}
 	if request.Salary <= 0 {
 		opening.Salary = request.Salary
+	}
+	if request.Link != "" {
+		opening.Link = request.Link
 	}
 	// Save opening
 	if err := db.Save(&opening).Error; err != nil {
