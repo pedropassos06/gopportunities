@@ -19,14 +19,16 @@ type Opening struct {
 }
 
 type OpeningResponse struct {
-	ID        uint      `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `json:"deleted_at,omitempty"`
-	Role      string    `json:"role"`
-	Company   string    `json:"company"`
-	Location  string    `json:"location"`
-	Remote    bool      `json:"remote"`
-	Link      string    `json:"link"`
-	Salary    int64     `json:"salary"`
+	ID               uint      `json:"id"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+	DeletedAt        time.Time `json:"deleted_at,omitempty"`
+	Role             string    `json:"role"`
+	Company          string    `json:"company"`
+	Location         string    `json:"location"`
+	TypeOfEmployment string    `json:"type_of_employment"`
+	Salary           int64     `json:"salary"`
+	CompanyLogoUrl   string    `json:"company_logo_url"`
+	Description      string    `json:"description"`
+	Link             string    `json:"link"`
 }
