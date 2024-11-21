@@ -7,18 +7,17 @@ func errParamIsRequired(name, typ string) error {
 }
 
 type CreateOpeningRequest struct {
-	Role     string `json:"role"`
-	Company  string `json:"company"`
-	Location string `json:"location"`
-	Remote   *bool  `json:"remote"`
-	Link     string `json:"link"`
-	Salary   int64  `json:"salary"`
+	Role             string `json:"role"`
+	Company          string `json:"company"`
+	Location         string `json:"location"`
+	TypeOfEmployment string `json:"type_of_employment"`
+	Salary           int64  `json:"salary"`
+	CompanyLogoUrl   string `json:"company_logo_url"`
+	Description      string `json:"description"`
+	Link             string `json:"link"`
 }
 
 func (r *CreateOpeningRequest) Validate() error {
-	if r.Role == "" && r.Company == "" && r.Location == "" && r.Link == "" && r.Remote == nil && r.Salary <= 0 {
-		return fmt.Errorf("request body is empty or malformed")
-	}
 	if r.Role == "" {
 		return errParamIsRequired("role", "string")
 	}
@@ -28,14 +27,20 @@ func (r *CreateOpeningRequest) Validate() error {
 	if r.Location == "" {
 		return errParamIsRequired("location", "string")
 	}
-	if r.Link == "" {
-		return errParamIsRequired("link", "string")
-	}
-	if r.Remote == nil {
-		return errParamIsRequired("remote", "bool")
+	if r.TypeOfEmployment == "" {
+		return errParamIsRequired("type_of_employment", "string")
 	}
 	if r.Salary <= 0 {
 		return errParamIsRequired("salary", "int64")
+	}
+	if r.CompanyLogoUrl == "" {
+		return errParamIsRequired("company_logo_url", "string")
+	}
+	if r.Description == "" {
+		return errParamIsRequired("remote", "bool")
+	}
+	if r.Link == "" {
+		return errParamIsRequired("link", "string")
 	}
 	return nil
 }
