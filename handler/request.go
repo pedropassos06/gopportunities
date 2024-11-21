@@ -46,17 +46,19 @@ func (r *CreateOpeningRequest) Validate() error {
 }
 
 type UpdateOpeningRequest struct {
-	Role     string `json:"role"`
-	Company  string `json:"company"`
-	Location string `json:"location"`
-	Remote   *bool  `json:"remote"`
-	Link     string `json:"link"`
-	Salary   int64  `json:"salary"`
+	Role             string `json:"role"`
+	Company          string `json:"company"`
+	Location         string `json:"location"`
+	TypeOfEmployment string `json:"type_of_employment"`
+	Salary           int64  `json:"salary"`
+	CompanyLogoUrl   string `json:"company_logo_url"`
+	Description      string `json:"description"`
+	Link             string `json:"link"`
 }
 
 func (r *UpdateOpeningRequest) Validate() error {
 	// if any field is provided, validation is true
-	if r.Role != "" || r.Company != "" || r.Location != "" || r.Remote != nil || r.Link != "" || r.Salary > 0 {
+	if r.Role != "" || r.Company != "" || r.Location != "" || r.TypeOfEmployment != "" || r.Salary > 0 || r.CompanyLogoUrl != "" || r.Description != nil || r.Link != "" {
 		return nil
 	}
 
