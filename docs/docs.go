@@ -239,20 +239,26 @@ const docTemplate = `{
                 "company": {
                     "type": "string"
                 },
+                "company_logo_url": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
                 "link": {
                     "type": "string"
                 },
                 "location": {
                     "type": "string"
                 },
-                "remote": {
-                    "type": "boolean"
-                },
                 "role": {
                     "type": "string"
                 },
                 "salary": {
                     "type": "integer"
+                },
+                "type_of_employment": {
+                    "type": "string"
                 }
             }
         },
@@ -320,20 +326,26 @@ const docTemplate = `{
                 "company": {
                     "type": "string"
                 },
+                "company_logo_url": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
                 "link": {
                     "type": "string"
                 },
                 "location": {
                     "type": "string"
                 },
-                "remote": {
-                    "type": "boolean"
-                },
                 "role": {
                     "type": "string"
                 },
                 "salary": {
                     "type": "integer"
+                },
+                "type_of_employment": {
+                    "type": "string"
                 }
             }
         },
@@ -354,10 +366,16 @@ const docTemplate = `{
                 "company": {
                     "type": "string"
                 },
+                "company_logo_url": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
                 "deleted_at": {
+                    "type": "string"
+                },
+                "description": {
                     "type": "string"
                 },
                 "id": {
@@ -369,14 +387,14 @@ const docTemplate = `{
                 "location": {
                     "type": "string"
                 },
-                "remote": {
-                    "type": "boolean"
-                },
                 "role": {
                     "type": "string"
                 },
                 "salary": {
                     "type": "integer"
+                },
+                "type_of_employment": {
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string"
