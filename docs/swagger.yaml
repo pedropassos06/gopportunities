@@ -39,7 +39,7 @@ definitions:
       message:
         type: string
     type: object
-  handler.LstOpeningsResponse:
+  handler.ListOpeningsResponse:
     properties:
       data:
         items:
@@ -81,6 +81,15 @@ definitions:
       message:
         type: string
     type: object
+  handler.UploadResumeResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/schemas.ResumeResponse'
+        type: array
+      message:
+        type: string
+    type: object
   schemas.OpeningResponse:
     properties:
       company:
@@ -107,6 +116,25 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  schemas.ResumeResponse:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      file_name:
+        type: string
+      file_path:
+        type: string
+      file_type:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
     type: object
 info:
   contact: {}
@@ -246,7 +274,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.LstOpeningsResponse'
+            $ref: '#/definitions/handler.ListOpeningsResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -254,4 +282,38 @@ paths:
       summary: List all openings
       tags:
       - Openings
+  /resumes/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a resume to the database
+      parameters:
+      - description: User ID of the resume owner
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: Resume file to upload
+        in: formData
+        name: resume
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.UploadResumeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Upload Resume
+      tags:
+      - Resumes
 swagger: "2.0"
