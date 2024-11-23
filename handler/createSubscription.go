@@ -20,11 +20,22 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /newsletter/subscribe [post]
 func SubscribeHandler(ctx *gin.Context) {
-	var subscription schemas.NewsletterSubscription
+	var request NewsletterSubscriptionRequest
 
-	if err := ctx.ShouldBindJSON(&subscription); err != nil {
+	if err := ctx.ShouldBindJSON(&request); err != nil {
 		sendError(ctx, http.StatusBadRequest, "Invalid input")
 		return
+	}
+
+	if err := request.Validate(); err != nil {
+		sendError(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	subscription := schemas.NewsletterSubscription{
+		UserID:     request.UserID,
+		Email:      request.Email,
+		Subscribed: true,
 	}
 
 	if err := db.Create(&subscription).Error; err != nil {
