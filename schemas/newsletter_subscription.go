@@ -10,7 +10,7 @@ type NewsletterSubscription struct {
 	gorm.Model
 	UserID     uint
 	Email      string
-	Subscribed bool
+	Subscribed bool `gorm:"default:true"`
 }
 
 type NewsletterSubscriptionResponse struct {
