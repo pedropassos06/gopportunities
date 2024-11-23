@@ -58,3 +58,8 @@ type UploadResumeResponse struct {
 	Message string                   `json:"message"`
 	Data    []schemas.ResumeResponse `json:"data"`
 }
+
+type NewsletterSubscriptionResponse struct {
+	Message string                                   `json:"message"`
+	Data    []schemas.NewsletterSubscriptionResponse `json:"data"`
+}
