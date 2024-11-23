@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,11 +23,11 @@ import (
 // @Success 200 {object} UploadResumeResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /resumes/upload [post]
+// @Router /resumes/upload/{user_id} [post]
 func UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
-	userID := ctx.Param("user_id")
-	if userID == "" {
+	userIDStr := ctx.Param("user_id")
+	if userIDStr == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "user_id is required to upload resume",
 		})
@@ -49,8 +50,17 @@ func UploadResumeHandler(ctx *gin.Context) {
 		return
 	}
 
+	// Convert userID to uint
+	userID, err := strconv.ParseUint(userIDStr, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "user_id must be a valid integer",
+		})
+		return
+	}
+
 	resume := schemas.Resume{
-		UserID:   123,
+		UserID:   uint(userID),
 		Filetype: filepath.Ext(file.Filename),
 		Filepath: filePath,
 	}
