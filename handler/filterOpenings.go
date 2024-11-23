@@ -8,7 +8,7 @@ import (
 )
 
 // handler for filtering listings
-func ListFilteredOpeningsHandler(ctx *gin.Context) {
+func (h *Handler) ListFilteredOpeningsHandler(ctx *gin.Context) {
 	filters := make(map[string]interface{})
 
 	// read query params and add to filters
@@ -26,7 +26,7 @@ func ListFilteredOpeningsHandler(ctx *gin.Context) {
 	}
 
 	// Call the generic filter function
-	openings, err := FilterOpenings(filters)
+	openings, err := h.FilterOpenings(filters)
 	if err != nil {
 		sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
@@ -36,11 +36,11 @@ func ListFilteredOpeningsHandler(ctx *gin.Context) {
 }
 
 // filters openings based on a filters array
-func FilterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
+func (h *Handler) FilterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
 	var openings []schemas.Opening
 
 	// start the query
-	query := db.Model(&schemas.Opening{})
+	query := h.DB.Model(&schemas.Opening{})
 
 	// dynamically apply filters
 	for key, value := range filters {

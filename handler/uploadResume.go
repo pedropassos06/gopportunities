@@ -24,7 +24,7 @@ import (
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /resumes/upload/{user_id} [post]
-func UploadResumeHandler(ctx *gin.Context) {
+func (h *Handler) UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
 	userIDStr := ctx.Param("user_id")
 	if userIDStr == "" {
@@ -65,8 +65,8 @@ func UploadResumeHandler(ctx *gin.Context) {
 		Filepath: filePath,
 	}
 
-	if err := db.Create(&resume).Error; err != nil {
-		logger.Errf("error uploading resume: %v", err.Error())
+	if err := h.DB.Create(&resume).Error; err != nil {
+		h.Logger.Errf("error uploading resume: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error uploading resume on database")
 		return
 	}

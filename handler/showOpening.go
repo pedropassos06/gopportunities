@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} ErrorResponse "ID query parameter is missing"
 // @Failure 404 {object} ErrorResponse "Opening not found"
 // @Router /opening [get]
-func ShowOpeningHandler(ctx *gin.Context) {
+func (h *Handler) ShowOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
 		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
@@ -28,7 +28,7 @@ func ShowOpeningHandler(ctx *gin.Context) {
 
 	opening := schemas.Opening{}
 
-	if err := db.First(&opening, id).Error; err != nil {
+	if err := h.DB.First(&opening, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "opening not found.")
 		return
 	}

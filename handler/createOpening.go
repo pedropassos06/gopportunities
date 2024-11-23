@@ -19,13 +19,13 @@ import (
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [post]
-func CreateOpeningHandler(ctx *gin.Context) {
+func (h *Handler) CreateOpeningHandler(ctx *gin.Context) {
 	request := CreateOpeningRequest{}
 
 	ctx.BindJSON(&request)
 
 	if err := request.Validate(); err != nil {
-		logger.Errf("validation error: %v", err.Error())
+		h.Logger.Errf("validation error: %v", err.Error())
 		sendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -41,8 +41,8 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Link:             request.Link,
 	}
 
-	if err := db.Create(&opening).Error; err != nil {
-		logger.Errf("error creating opening: %v", err.Error())
+	if err := h.DB.Create(&opening).Error; err != nil {
+		h.Logger.Errf("error creating opening: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error creating opening on database")
 		return
 	}

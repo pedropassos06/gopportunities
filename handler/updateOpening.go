@@ -21,13 +21,13 @@ import (
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [put]
-func UpdateOpeningHandler(ctx *gin.Context) {
+func (h *Handler) UpdateOpeningHandler(ctx *gin.Context) {
 	request := UpdateOpeningRequest{}
 
 	ctx.BindJSON(&request)
 
 	if err := request.Validate(); err != nil {
-		logger.Errf("validation error: %v", err.Error())
+		h.Logger.Errf("validation error: %v", err.Error())
 		sendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -39,7 +39,7 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	}
 	opening := schemas.Opening{}
 
-	if err := db.First(&opening, id).Error; err != nil {
+	if err := h.DB.First(&opening, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "opening not found")
 		return
 	}
@@ -70,8 +70,8 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 		opening.Link = request.Link
 	}
 	// Save opening
-	if err := db.Save(&opening).Error; err != nil {
-		logger.Errf("error updating opening: %v", err.Error())
+	if err := h.DB.Save(&opening).Error; err != nil {
+		h.Logger.Errf("error updating opening: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error updating opening")
 		return
 	}

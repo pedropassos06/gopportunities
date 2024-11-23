@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} ListOpeningsResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /openings [get]
-func ListOpeningsHandler(ctx *gin.Context) {
+func (h *Handler) ListOpeningsHandler(ctx *gin.Context) {
 	// Check if any query parameters are provided
 	filters := make(map[string]interface{})
 	if role := ctx.Query("role"); role != "" {
@@ -39,7 +39,7 @@ func ListOpeningsHandler(ctx *gin.Context) {
 	// If no filters are provided, list all openings
 	if len(filters) == 0 {
 		var openings []schemas.Opening
-		if err := db.Find(&openings).Error; err != nil {
+		if err := h.DB.Find(&openings).Error; err != nil {
 			sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 			return
 		}
@@ -48,7 +48,7 @@ func ListOpeningsHandler(ctx *gin.Context) {
 	}
 
 	// Otherwise, apply filters
-	openings, err := filterOpenings(filters)
+	openings, err := h.filterOpenings(filters)
 	if err != nil {
 		sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
@@ -57,11 +57,11 @@ func ListOpeningsHandler(ctx *gin.Context) {
 }
 
 // filters openings based on a filters array
-func filterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
+func (h *Handler) filterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
 	var openings []schemas.Opening
 
 	// start the query
-	query := db.Model(&schemas.Opening{})
+	query := h.DB.Model(&schemas.Opening{})
 
 	// dynamically apply filters
 	for key, value := range filters {
