@@ -17,7 +17,7 @@ import (
 // @Tags Resumes
 // @Accept multipart/form-data
 // @Produce json
-// @Param user_id query string true "User ID of the resume owner"
+// @Param user_id path string true "User ID of the resume owner"
 // @Param resume formData file true "Resume file to upload"
 // @Success 200 {object} UploadResumeResponse
 // @Failure 400 {object} ErrorResponse
