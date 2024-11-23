@@ -220,7 +220,7 @@
                 }
             }
         },
-        "/resumes/upload": {
+        "/resumes/upload/{user_id}": {
             "post": {
                 "description": "Uploads a resume to the database",
                 "consumes": [
@@ -238,7 +238,7 @@
                         "type": "string",
                         "description": "User ID of the resume owner",
                         "name": "user_id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {

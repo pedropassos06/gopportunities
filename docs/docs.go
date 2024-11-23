@@ -231,7 +231,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/resumes/upload": {
+        "/resumes/upload/{user_id}": {
             "post": {
                 "description": "Uploads a resume to the database",
                 "consumes": [
@@ -249,7 +249,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "User ID of the resume owner",
                         "name": "user_id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {

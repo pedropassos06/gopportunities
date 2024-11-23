@@ -282,14 +282,14 @@ paths:
       summary: List all openings
       tags:
       - Openings
-  /resumes/upload:
+  /resumes/upload/{user_id}:
     post:
       consumes:
       - multipart/form-data
       description: Uploads a resume to the database
       parameters:
       - description: User ID of the resume owner
-        in: query
+        in: path
         name: user_id
         required: true
         type: string
