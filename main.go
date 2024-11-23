@@ -10,11 +10,20 @@ var (
 )
 
 func main() {
-	// Initialize Logger
-	logger = config.GetLogger("main")
+	// Create Logger
+	logger := config.GetLogger("main")
+
+	// Create SQLite instance
+	sqlite := &config.SQLite{
+		Path:   "./db/main.db",
+		Logger: logger,
+	}
 
 	// Initialize configs
-	err := config.Init()
+	err := config.Init(config.Config{
+		DB:     sqlite,
+		Logger: logger,
+	})
 	if err != nil {
 		logger.Err(err)
 		return
