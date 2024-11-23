@@ -5,12 +5,15 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	logger config.Logger
-	db     *gorm.DB
-)
+type Handler struct {
+	DB     *gorm.DB
+	Logger config.Logger
+}
 
-func InitializeHandler() {
-	logger = config.GetLogger("handler")
-	db = config.GetSQLite()
+// NewHandler initializes and returns a Handler instance
+func NewHandler(db *gorm.DB, logger config.Logger) *Handler {
+	return &Handler{
+		DB:     db,
+		Logger: logger,
+	}
 }
