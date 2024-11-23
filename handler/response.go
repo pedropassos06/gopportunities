@@ -49,7 +49,12 @@ type UpdateOpeningResponse struct {
 	Data    schemas.OpeningResponse `json:"data"`
 }
 
-type LstOpeningsResponse struct {
+type ListOpeningsResponse struct {
 	Message string                    `json:"message"`
 	Data    []schemas.OpeningResponse `json:"data"`
+}
+
+type UploadResumeResponse struct {
+	Message string                   `json:"message"`
+	Data    []schemas.ResumeResponse `json:"data"`
 }
