@@ -64,3 +64,15 @@ func (r *UpdateOpeningRequest) Validate() error {
 
 	return fmt.Errorf("at least one valid field must be provided")
 }
+
+type NewsletterSubscriptionRequest struct {
+	UserID uint   `json:"user_id"`
+	Email  string `json:"email"`
+}
+
+func (r *NewsletterSubscriptionRequest) Validate() error {
+	if r.Email == "" {
+		return errParamIsRequired("email", "string")
+	}
+	return nil
+}
