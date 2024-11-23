@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Tags Newsletter
-// @Param request body NewsletterSubscription true "Newsletter subscription details"
+// @Param request body NewsletterSubscriptionRequest true "Newsletter subscription details"
 // @Success 200 {object} NewsletterSubscriptionResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
