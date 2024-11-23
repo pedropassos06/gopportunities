@@ -27,3 +27,4 @@ go.work.sum
 # DB Folder
 db/
 uploads/
+docs/
