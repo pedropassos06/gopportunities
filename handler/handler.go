@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	logger *config.Logger
+	logger config.Logger
 	db     *gorm.DB
 )
 
