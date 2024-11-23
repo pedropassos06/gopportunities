@@ -8,15 +8,21 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitializeSQLite() (*gorm.DB, error) {
-	// Get Logger
-	logger := GetLogger("SQLite")
-	dbPath := "./db/main.db"
+type Database interface {
+	Connect() (*gorm.DB, error)
+	Migrate(db *gorm.DB) error
+}
 
+type SQLite struct {
+	Path   string
+	Logger Logger
+}
+
+func (s *SQLite) Connect() (*gorm.DB, error) {
 	// Check if the db exists
-	_, err := os.Stat(dbPath)
+	_, err := os.Stat(s.Path)
 	if os.IsNotExist(err) {
-		logger.Info("Database file not found, creating...")
+		s.Logger.Info("Database file not found, creating...")
 
 		// Create the db file and directory
 		err = os.MkdirAll("./db", os.ModePerm)
@@ -24,7 +30,7 @@ func InitializeSQLite() (*gorm.DB, error) {
 			return nil, err
 		}
 
-		file, err := os.Create(dbPath)
+		file, err := os.Create(s.Path)
 		if err != nil {
 			return nil, err
 		}
@@ -33,19 +39,21 @@ func InitializeSQLite() (*gorm.DB, error) {
 	}
 
 	// Create DB and connect
-	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(s.Path), &gorm.Config{})
 	if err != nil {
-		logger.Errf("SQLite opening error: %v", err)
+		s.Logger.Errf("SQLite opening error: %v", err)
 		return nil, err
 	}
 
-	// Migrate schema
-	err = db.AutoMigrate(&schemas.Opening{}, &schemas.Resume{}, &schemas.NewsletterSubscription{})
-	if err != nil {
-		logger.Errf("SQLite auto migrate error: %v", err)
-		return nil, err
-	}
-
-	// Return db
 	return db, nil
+}
+
+func (s *SQLite) Migrate(db *gorm.DB) error {
+	// Migrate schema
+	err := db.AutoMigrate(&schemas.Opening{}, &schemas.Resume{}, &schemas.NewsletterSubscription{})
+	if err != nil {
+		s.Logger.Errf("SQLite auto migrate error: %v", err)
+		return err
+	}
+	return nil
 }
