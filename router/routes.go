@@ -20,7 +20,7 @@ func InitializeRoutes(r *gin.Engine) {
 		v1.DELETE("/opening", handler.DeleteOpeningHandler)
 		v1.PUT("/opening", handler.UpdateOpeningHandler)
 		v1.GET("/openings", handler.ListOpeningsHandler)
-		v1.POST("/resume", handler.UploadResumeHandler)
+		v1.POST("/resumes/upload", handler.UploadResumeHandler)
 		v1.GET("/ping", handler.PingHandler)
 	}
 
