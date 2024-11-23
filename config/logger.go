@@ -6,7 +6,18 @@ import (
 	"os"
 )
 
-type Logger struct {
+type Logger interface {
+	Debug(v ...interface{})
+	Info(v ...interface{})
+	Warning(v ...interface{})
+	Err(v ...interface{})
+	Debugf(format string, v ...interface{})
+	Infof(format string, v ...interface{})
+	Warningf(format string, v ...interface{})
+	Errf(format string, v ...interface{})
+}
+
+type AppLogger struct {
 	debug   *log.Logger
 	info    *log.Logger
 	warning *log.Logger
@@ -14,11 +25,11 @@ type Logger struct {
 	writer  io.Writer
 }
 
-func NewLogger(p string) *Logger {
+func NewLogger(p string) *AppLogger {
 	writer := io.Writer(os.Stdout)
 	logger := log.New(writer, p, log.Ldate|log.Ltime)
 
-	return &Logger{
+	return &AppLogger{
 		log.New(writer, "DEBUG: ", logger.Flags()),
 		log.New(writer, "INFO: ", logger.Flags()),
 		log.New(writer, "WARNING: ", logger.Flags()),
@@ -28,35 +39,35 @@ func NewLogger(p string) *Logger {
 }
 
 // Create non-formatted logs
-func (l *Logger) Debug(v ...interface{}) {
+func (l *AppLogger) Debug(v ...interface{}) {
 	l.debug.Println(v...)
 }
 
-func (l *Logger) Info(v ...interface{}) {
+func (l *AppLogger) Info(v ...interface{}) {
 	l.info.Println(v...)
 }
 
-func (l *Logger) Warning(v ...interface{}) {
+func (l *AppLogger) Warning(v ...interface{}) {
 	l.warning.Println(v...)
 }
 
-func (l *Logger) Err(v ...interface{}) {
+func (l *AppLogger) Err(v ...interface{}) {
 	l.err.Println(v...)
 }
 
 // Create formatted logs
-func (l *Logger) Debugf(format string, v ...interface{}) {
+func (l *AppLogger) Debugf(format string, v ...interface{}) {
 	l.debug.Printf(format, v...)
 }
 
-func (l *Logger) Infof(format string, v ...interface{}) {
+func (l *AppLogger) Infof(format string, v ...interface{}) {
 	l.info.Printf(format, v...)
 }
 
-func (l *Logger) Warningf(format string, v ...interface{}) {
+func (l *AppLogger) Warningf(format string, v ...interface{}) {
 	l.warning.Printf(format, v...)
 }
 
-func (l *Logger) Errf(format string, v ...interface{}) {
+func (l *AppLogger) Errf(format string, v ...interface{}) {
 	l.err.Printf(format, v...)
 }
