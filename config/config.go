@@ -11,14 +11,29 @@ var (
 	logger Logger
 )
 
-func Init() error {
+type Config struct {
+	DB     Database
+	Logger Logger
+}
+
+func Init(config Config) error {
 	var err error
 
-	// Initialize SQLite
-	db, err = InitializeDB()
+	// Initialize the logger
+	logger = config.Logger
+
+	// Initialize the database
+	db, err = config.DB.Connect()
 	if err != nil {
-		return fmt.Errorf("error initializing sqlite: %v", err)
+		return fmt.Errorf("error connecting to database: %v", err)
 	}
+
+	// Migrate the schema
+	err = config.DB.Migrate(db)
+	if err != nil {
+		return fmt.Errorf("error migrating database: %v", err)
+	}
+
 	return nil
 }
 
