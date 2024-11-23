@@ -10,6 +10,19 @@ import (
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
+// @BasePath /api/v1
+
+// @Summary Upload Resume
+// @Description Uploads a resume to the database
+// @Tags Resumes
+// @Accept multipart/form-data
+// @Produce json
+// @Param user_id query string true "User ID of the resume owner"
+// @Param resume formData file true "Resume file to upload"
+// @Success 200 {object} UploadResumeResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /resumes/upload [post]
 func UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
 	userID := ctx.Param("user_id")
