@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	docs "github.com/pedropassos06/gopportunities/docs"
 	"github.com/pedropassos06/gopportunities/handler"
+	"github.com/pedropassos06/gopportunities/handler/subscriptions"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -21,6 +22,7 @@ func InitializeRoutes(r *gin.Engine) {
 		v1.PUT("/opening", handler.UpdateOpeningHandler)
 		v1.GET("/openings", handler.ListOpeningsHandler)
 		v1.POST("/resumes/upload/:user_id", handler.UploadResumeHandler)
+		v1.POST("/newsletter/subscribe", subscriptions.SubscribeHandler)
 		v1.GET("/ping", handler.PingHandler)
 	}
 
