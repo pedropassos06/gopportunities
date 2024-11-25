@@ -1,6 +1,9 @@
 package router
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pedropassos06/gopportunities/docs"
 	"github.com/pedropassos06/gopportunities/handler"
@@ -29,5 +32,9 @@ func InitializeRoutes(r *gin.Engine, h *handler.Handler) {
 	// Initialize Swagger
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	r.Run(":8081")
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "8081" // configure this if needed
+	}
+	r.Run(fmt.Sprintf(":%s", port))
 }
