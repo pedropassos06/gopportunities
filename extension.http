@@ -29,3 +29,15 @@ Content-Type: application/json
 
 ### Test DeleteOpeningHandler - Success
 DELETE http://localhost:8081/api/v1/opening?id=12
+
+### Test SubscribeHandler - Success
+POST http://localhost:8081/api/v1/newsletter/subscribe
+Content-Type: application/json
+
+{
+    "user_id": 1232,
+    "email": "user@example.com"
+}
+
+### Test PingHandler - Success
+GET http://localhost:8081/api/v1/ping
