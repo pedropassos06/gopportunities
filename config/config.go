@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
@@ -44,4 +45,12 @@ func GetSQLite() *gorm.DB {
 func GetLogger(p string) Logger {
 	logger = NewLogger(p)
 	return logger
+}
+
+func LoadEnv() error {
+	err := godotenv.Load()
+	if err != nil {
+		return fmt.Errorf("error loading .env file: %v", err)
+	}
+	return nil
 }
