@@ -1,0 +1,31 @@
+### Test ShowOpeningHandler - Success
+GET http://localhost:8081/api/v1/opening?id=9
+
+### Test ListOpeningsHandler - Success
+GET http://localhost:8081/api/v1/openings
+
+### Test CreateOpeningHandler - Success
+POST http://localhost:8081/api/v1/opening
+Content-Type: application/json
+
+{  
+    "role":"Application Developer",
+    "company":"Microsoft",
+    "location":"Boise, ID",
+    "type_of_employment":"Full-time",
+    "salary":60000,
+    "company_logo_url":"https://www.microsoft.com/en-us/",
+    "description":"Microsoft is looking for a Software Engineer to join their team in Boise, ID.",
+    "link":"https://www.microsoft.com/en-us/"
+}
+
+### Test UpdateOpeningHandler - Success
+PUT http://localhost:8081/api/v1/opening?id=12
+Content-Type: application/json
+
+{
+    "role":"Associate Developer"
+}
+
+### Test DeleteOpeningHandler - Success
+DELETE http://localhost:8081/api/v1/opening?id=12
