@@ -9,14 +9,14 @@ POST http://localhost:8081/api/v1/opening
 Content-Type: application/json
 
 {  
-    "role":"Application Developer",
-    "company":"Microsoft",
-    "location":"Boise, ID",
-    "type_of_employment":"Full-time",
-    "salary":60000,
-    "company_logo_url":"https://www.microsoft.com/en-us/",
-    "description":"Microsoft is looking for a Software Engineer to join their team in Boise, ID.",
-    "link":"https://www.microsoft.com/en-us/"
+    "role": "Application Developer",
+    "company": "McDonalds",
+    "location": "Silver Spring, MD",
+    "type_of_employment": "Part-time",
+    "salary": 63000,
+    "company_logo_url": "https://www.mcd.com/en-us/",
+    "description": "McDonalds is looking for a Software Engineer to join their team in Silver Spring, MD.",
+    "link": "https://www.mcd.com/en-us/"
 }
 
 ### Test UpdateOpeningHandler - Success
