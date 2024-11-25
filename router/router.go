@@ -21,6 +21,8 @@ func InitializeRoutes(r *gin.Engine, h *handler.Handler) {
 		v1.GET("/openings", h.ListOpeningsHandler)
 		v1.POST("/resumes/upload/:user_id", h.UploadResumeHandler)
 		v1.POST("/newsletter/subscribe", h.SubscribeHandler)
+		v1.GET("/auth/google", h.GoogleAuthHandler)
+		v1.GET("/auth/google/callback", h.GoogleCallbackHandler)
 		v1.GET("/ping", h.PingHandler)
 	}
 
