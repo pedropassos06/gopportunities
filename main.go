@@ -7,6 +7,11 @@ import (
 	"github.com/pedropassos06/gopportunities/router"
 )
 
+func init() {
+	// Load .env file
+	config.LoadEnv()
+}
+
 func main() {
 	// Create Logger
 	logger := config.GetLogger("main")
