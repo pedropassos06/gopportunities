@@ -37,7 +37,7 @@ func (r *CreateOpeningRequest) Validate() error {
 		return errParamIsRequired("company_logo_url", "string")
 	}
 	if r.Description == "" {
-		return errParamIsRequired("remote", "bool")
+		return errParamIsRequired("description", "string")
 	}
 	if r.Link == "" {
 		return errParamIsRequired("link", "string")
