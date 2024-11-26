@@ -1,12 +1,15 @@
 ### Test ShowOpeningHandler - Success
 GET http://localhost:8081/api/v1/opening?id=9
+Authorization: Bearer valid-token
 
 ### Test ListOpeningsHandler - Success
 GET http://localhost:8081/api/v1/openings
+Authorization: Bearer valid-token
 
 ### Test CreateOpeningHandler - Success
 POST http://localhost:8081/api/v1/opening
 Content-Type: application/json
+Authorization: Bearer valid-token
 
 {  
     "role": "Application Developer",
@@ -22,6 +25,7 @@ Content-Type: application/json
 ### Test UpdateOpeningHandler - Success
 PUT http://localhost:8081/api/v1/opening?id=12
 Content-Type: application/json
+Authorization: Bearer valid-token
 
 {
     "role":"Associate Developer"
@@ -29,10 +33,12 @@ Content-Type: application/json
 
 ### Test DeleteOpeningHandler - Success
 DELETE http://localhost:8081/api/v1/opening?id=12
+Authorization: Bearer valid-token
 
 ### Test SubscribeHandler - Success
 POST http://localhost:8081/api/v1/newsletter/subscribe
 Content-Type: application/json
+Authorization: Bearer valid-token
 
 {
     "user_id": 1232,
