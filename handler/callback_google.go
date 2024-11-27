@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -51,7 +52,12 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 		return
 	}
 
-	// send success
-	sendSuccess(ctx, "auth-endpoint", userInfo)
+	jwt, err := helper.GenerateJWT(userInfo)
+	if err != nil {
+		sendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
+		return
+	}
 
+	// send success
+	ctx.JSON(http.StatusOK, gin.H{"token": jwt})
 }
