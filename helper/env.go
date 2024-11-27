@@ -1,5 +1,13 @@
 package helper
 
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
+
 // loads env file
 func LoadEnv() {
 	// Load .env file
