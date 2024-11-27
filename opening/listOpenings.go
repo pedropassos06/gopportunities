@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
+	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
 // @BasePath /api/v1/
@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} ListOpeningsResponse
-// @Failure 500 {object} helper.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
 // @Router /openings [get]
 func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 	// Check if any query parameters are provided
@@ -41,20 +41,20 @@ func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 	if len(filters) == 0 {
 		var openings []schemas.Opening
 		if err := h.DB.Find(&openings).Error; err != nil {
-			helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+			utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 			return
 		}
-		helper.SendSuccess(ctx, "list-openings", openings)
+		utils.SendSuccess(ctx, "list-openings", openings)
 		return
 	}
 
 	// Otherwise, apply filters
 	openings, err := h.filterOpenings(filters)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+		utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
 	}
-	helper.SendSuccess(ctx, "list-filtered-openings", openings)
+	utils.SendSuccess(ctx, "list-filtered-openings", openings)
 }
 
 // filters openings based on a filters array

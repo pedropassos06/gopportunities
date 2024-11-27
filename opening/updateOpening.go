@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
+	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
 // @BasePath /api/v1/
@@ -18,9 +18,9 @@ import (
 // @Param id query string true "Opening ID"
 // @Param opening body UpdateOpeningRequest true "Opening data to update"
 // @Success 200 {object} UpdateOpeningResponse
-// @Failure 400 {object} helper.ErrorResponse
-// @Failure 404 {object} helper.ErrorResponse
-// @Failure 500 {object} helper.ErrorResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
 // @Router /opening [put]
 func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 	request := UpdateOpeningRequest{}
@@ -29,19 +29,19 @@ func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 
 	if err := request.Validate(); err != nil {
 		h.Logger.Errf("validation error: %v", err.Error())
-		helper.SendError(ctx, http.StatusBadRequest, err.Error())
+		utils.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	id := ctx.Query("id")
 	if id == "" {
-		helper.SendError(ctx, http.StatusBadRequest, helper.ErrParamIsRequired("id", "queryParameter").Error())
+		utils.SendError(ctx, http.StatusBadRequest, utils.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
 	opening := schemas.Opening{}
 
 	if err := h.DB.First(&opening, id).Error; err != nil {
-		helper.SendError(ctx, http.StatusNotFound, "opening not found")
+		utils.SendError(ctx, http.StatusNotFound, "opening not found")
 		return
 	}
 
@@ -73,9 +73,9 @@ func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 	// Save opening
 	if err := h.DB.Save(&opening).Error; err != nil {
 		h.Logger.Errf("error updating opening: %v", err.Error())
-		helper.SendError(ctx, http.StatusInternalServerError, "error updating opening")
+		utils.SendError(ctx, http.StatusInternalServerError, "error updating opening")
 		return
 	}
 
-	helper.SendSuccess(ctx, "update-opening", opening)
+	utils.SendSuccess(ctx, "update-opening", opening)
 }

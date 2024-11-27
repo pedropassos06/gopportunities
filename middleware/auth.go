@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	helper "github.com/pedropassos06/gopportunities/helper"
+	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -26,7 +26,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// validate token
 		token := parts[1]
-		if !helper.ValidateToken(token) {
+		if !utils.ValidateToken(token) {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
 			return
 		}

@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	helper "github.com/pedropassos06/gopportunities/helper"
 	schemas "github.com/pedropassos06/gopportunities/schemas"
+	utils "github.com/pedropassos06/gopportunities/utils"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -22,21 +22,21 @@ func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 	// load OAuth2 configuration
 	config, err := setUpGoogleAuthClient()
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, "error setting up google auth client")
+		utils.SendError(ctx, http.StatusInternalServerError, "error setting up google auth client")
 		return
 	}
 
 	// retrieve auth code from request
 	code := ctx.Query("code")
 	if code == "" {
-		helper.SendError(ctx, http.StatusBadRequest, "authorization code not found")
+		utils.SendError(ctx, http.StatusBadRequest, "authorization code not found")
 		return
 	}
 
 	// exchange auth code for access token
 	authToken, err := config.Exchange(ctx, code)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
+		utils.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -44,7 +44,7 @@ func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 	client := config.Client(ctx, authToken)
 	resp, err := client.Get(userInfoURL)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
+		utils.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	defer resp.Body.Close()
@@ -52,14 +52,14 @@ func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 	data, _ := io.ReadAll(resp.Body)
 	var userInfo map[string]interface{}
 	if err := json.Unmarshal(data, &userInfo); err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
+		utils.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// generate JWT token
-	jwt, err := helper.GenerateJWT(userInfo)
+	jwt, err := utils.GenerateJWT(userInfo)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
+		utils.SendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
 		return
 	}
 
@@ -72,9 +72,9 @@ func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 
 // sets up google auth client configuration
 func setUpGoogleAuthClient() (*oauth2.Config, error) {
-	clientID := helper.LoadEnvVariable("GOOGLE_CLIENT_ID")
-	clientSecret := helper.LoadEnvVariable("GOOGLE_CLIENT_SECRET")
-	redirectURL := helper.LoadEnvVariable("GOOGLE_REDIRECT_URL")
+	clientID := utils.LoadEnvVariable("GOOGLE_CLIENT_ID")
+	clientSecret := utils.LoadEnvVariable("GOOGLE_CLIENT_SECRET")
+	redirectURL := utils.LoadEnvVariable("GOOGLE_REDIRECT_URL")
 
 	return &oauth2.Config{
 		ClientID:     clientID,

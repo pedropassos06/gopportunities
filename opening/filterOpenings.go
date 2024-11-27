@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
+	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
 // handler for filtering listings
@@ -29,11 +29,11 @@ func (h *OpeningHandler) ListFilteredOpeningsHandler(ctx *gin.Context) {
 	// Call the generic filter function
 	openings, err := h.FilterOpenings(filters)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+		utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
 	}
 
-	helper.SendSuccess(ctx, "list-filtered-openings", openings)
+	utils.SendSuccess(ctx, "list-filtered-openings", openings)
 }
 
 // filters openings based on a filters array

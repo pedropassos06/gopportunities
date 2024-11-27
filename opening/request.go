@@ -3,7 +3,7 @@ package opening
 import (
 	"fmt"
 
-	"github.com/pedropassos06/gopportunities/helper"
+	"github.com/pedropassos06/gopportunities/utils"
 )
 
 type CreateOpeningRequest struct {
@@ -19,28 +19,28 @@ type CreateOpeningRequest struct {
 
 func (r *CreateOpeningRequest) Validate() error {
 	if r.Role == "" {
-		return helper.ErrParamIsRequired("role", "string")
+		return utils.ErrParamIsRequired("role", "string")
 	}
 	if r.Company == "" {
-		return helper.ErrParamIsRequired("company", "string")
+		return utils.ErrParamIsRequired("company", "string")
 	}
 	if r.Location == "" {
-		return helper.ErrParamIsRequired("location", "string")
+		return utils.ErrParamIsRequired("location", "string")
 	}
 	if r.TypeOfEmployment == "" {
-		return helper.ErrParamIsRequired("type_of_employment", "string")
+		return utils.ErrParamIsRequired("type_of_employment", "string")
 	}
 	if r.Salary <= 0 {
-		return helper.ErrParamIsRequired("salary", "int64")
+		return utils.ErrParamIsRequired("salary", "int64")
 	}
 	if r.CompanyLogoUrl == "" {
-		return helper.ErrParamIsRequired("company_logo_url", "string")
+		return utils.ErrParamIsRequired("company_logo_url", "string")
 	}
 	if r.Description == "" {
-		return helper.ErrParamIsRequired("description", "string")
+		return utils.ErrParamIsRequired("description", "string")
 	}
 	if r.Link == "" {
-		return helper.ErrParamIsRequired("link", "string")
+		return utils.ErrParamIsRequired("link", "string")
 	}
 	return nil
 }

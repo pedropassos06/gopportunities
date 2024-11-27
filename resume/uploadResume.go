@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
+	"github.com/pedropassos06/gopportunities/utils"
 )
 
 // @BasePath /api/v1
@@ -22,20 +22,20 @@ import (
 // @Param user_id path string true "User ID of the resume owner"
 // @Param resume formData file true "Resume file to upload"
 // @Success 200 {object} UploadResumeResponse
-// @Failure 400 {object} helper.ErrorResponse
-// @Failure 500 {object} helper.ErrorResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
 // @Router /resumes/upload/{user_id} [post]
 func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
 	userIDStr := ctx.Param("user_id")
 	if userIDStr == "" {
-		helper.SendError(ctx, http.StatusBadRequest, "user_id is required to upload resume")
+		utils.SendError(ctx, http.StatusBadRequest, "user_id is required to upload resume")
 		return
 	}
 
 	file, err := ctx.FormFile("resume")
 	if err != nil {
-		helper.SendError(ctx, http.StatusBadRequest, "resume is required")
+		utils.SendError(ctx, http.StatusBadRequest, "resume is required")
 		return
 	}
 
@@ -43,14 +43,14 @@ func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
 
 	err = ctx.SaveUploadedFile(file, filePath)
 	if err != nil {
-		helper.SendError(ctx, http.StatusInternalServerError, "failed to save file")
+		utils.SendError(ctx, http.StatusInternalServerError, "failed to save file")
 		return
 	}
 
 	// Convert userID to uint
 	userID, err := strconv.ParseUint(userIDStr, 10, 32)
 	if err != nil {
-		helper.SendError(ctx, http.StatusBadRequest, "user_id must be a valid integer")
+		utils.SendError(ctx, http.StatusBadRequest, "user_id must be a valid integer")
 		return
 	}
 
@@ -62,11 +62,11 @@ func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
 
 	if err := h.DB.Create(&resume).Error; err != nil {
 		h.Logger.Errf("error uploading resume: %v", err.Error())
-		helper.SendError(ctx, http.StatusInternalServerError, "error uploading resume on database")
+		utils.SendError(ctx, http.StatusInternalServerError, "error uploading resume on database")
 		return
 	}
 
-	helper.SendSuccess(ctx, "upload-resume", resume)
+	utils.SendSuccess(ctx, "upload-resume", resume)
 }
 
 func generateFilePath(filename string) string {
