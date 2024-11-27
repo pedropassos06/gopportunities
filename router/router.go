@@ -35,7 +35,8 @@ func InitializeRoutes(r *gin.Engine, ah *auth.AuthHandler, rh *resume.ResumeHand
 		protected.DELETE("/opening", oh.DeleteOpeningHandler)
 		protected.PUT("/opening", oh.UpdateOpeningHandler)
 		protected.GET("/openings", oh.ListOpeningsHandler)
-		protected.POST("/resumes/upload/:user_id", rh.UploadResumeHandler)
+		protected.POST("/resume/upload/:user_id", rh.UploadResumeHandler)
+		protected.DELETE("/resume/:resume_id", rh.DeleteResumeHandler)
 		protected.POST("/newsletter/subscribe", nh.SubscribeHandler)
 	}
 
