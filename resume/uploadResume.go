@@ -24,7 +24,7 @@ import (
 // @Success 200 {object} UploadResumeResponse
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
-// @Router /resumes/upload/{user_id} [post]
+// @Router /resume/upload/{user_id} [post]
 func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
 	userIDStr := ctx.Param("user_id")
