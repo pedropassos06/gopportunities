@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	helper "github.com/pedropassos06/gopportunities/helper"
+	schemas "github.com/pedropassos06/gopportunities/schemas"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -34,15 +34,16 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 	}
 
 	// exchange auth code for access token
-	token, err := config.Exchange(ctx, code)
+	authToken, err := config.Exchange(ctx, code)
 	if err != nil {
 		sendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// retrieve user info
-	client := config.Client(ctx, token)
-	resp, err := client.Get(userInfoURL); err != nil {
+	client := config.Client(ctx, authToken)
+	resp, err := client.Get(userInfoURL)
+	if err != nil {
 		sendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -56,7 +57,8 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 	}
 
 	// generate JWT token
-	jwt, err := helper.GenerateJWT(userInfo) err != nil {
+	jwt, err := helper.GenerateJWT(userInfo)
+	if err != nil {
 		sendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
 		return
 	}
@@ -70,9 +72,9 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 
 // sets up google auth client configuration
 func setUpGoogleAuthClient() (*oauth2.Config, error) {
-	clientID := helper.LoadEnv("GOOGLE_CLIENT_ID")
-	clientSecret := helper.LoadEnv("GOOGLE_CLIENT_SECRET")
-	redirectURL := helper.LoadEnv("GOOGLE_REDIRECT_URL")
+	clientID := helper.LoadEnvVariable("GOOGLE_CLIENT_ID")
+	clientSecret := helper.LoadEnvVariable("GOOGLE_CLIENT_SECRET")
+	redirectURL := helper.LoadEnvVariable("GOOGLE_REDIRECT_URL")
 
 	return &oauth2.Config{
 		ClientID:     clientID,
