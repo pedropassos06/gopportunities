@@ -5,18 +5,19 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// grab token from auth header
+		// grab auth header
 		authHeader := ctx.GetHeader("Authorization")
 		if authHeader == "" {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "authorization header not found"})
 			return
 		}
 
-		// check if token is valid
+		// check if auth header is bearer
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token format"})
@@ -25,7 +26,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// validate token
 		token := parts[1]
-		if !validateToken(token) {
+		if !helper.ValidateToken(token) {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
 			return
 		}
@@ -33,8 +34,4 @@ func AuthMiddleware() gin.HandlerFunc {
 		// continue
 		ctx.Next()
 	}
-}
-
-func validateToken(token string) bool {
-	return token == "valid-token"
 }
