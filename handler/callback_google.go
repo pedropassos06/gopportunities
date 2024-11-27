@@ -12,14 +12,18 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+var (
+	userInfoURL  = "https://www.googleapis.com/oauth2/v2/userinfo"
+	profileScope = "https://www.googleapis.com/auth/userinfo.profile"
+	emailScope   = "https://www.googleapis.com/auth/userinfo.email"
+)
+
 func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
-	// configure google oauth2
-	config := &oauth2.Config{
-		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  os.Getenv("GOOGLE_REDIRECT_URL"),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
+	// load OAuth2 configuration
+	config, err := setUpGoogleAuthClient()
+	if err != nil {
+		sendError(ctx, http.StatusInternalServerError, "error setting up google auth client")
+		return
 	}
 
 	// retrieve auth code from request
@@ -38,8 +42,7 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 
 	// retrieve user info
 	client := config.Client(ctx, token)
-	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
-	if err != nil {
+	resp, err := client.Get(userInfoURL); err != nil {
 		sendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -52,12 +55,30 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 		return
 	}
 
-	jwt, err := helper.GenerateJWT(userInfo)
-	if err != nil {
+	// generate JWT token
+	jwt, err := helper.GenerateJWT(userInfo) err != nil {
 		sendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
 		return
 	}
 
+	// create token response
+	token := &schemas.Token{Token: jwt}
+
 	// send success
-	ctx.JSON(http.StatusOK, gin.H{"token": jwt})
+	ctx.JSON(http.StatusOK, token)
+}
+
+// sets up google auth client configuration
+func setUpGoogleAuthClient() (*oauth2.Config, error) {
+	clientID := helper.LoadEnv("GOOGLE_CLIENT_ID")
+	clientSecret := helper.LoadEnv("GOOGLE_CLIENT_SECRET")
+	redirectURL := helper.LoadEnv("GOOGLE_REDIRECT_URL")
+
+	return &oauth2.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		RedirectURL:  redirectURL,
+		Scopes:       []string{profileScope, emailScope},
+		Endpoint:     google.Endpoint,
+	}, nil
 }
