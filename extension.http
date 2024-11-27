@@ -45,8 +45,9 @@ Authorization: Bearer valid-token
     "email": "user@example.com"
 }
 
-### Test PingHandler - Success
-GET http://localhost:8081/api/v1/ping
+### Test UnsubscribeHandler - Success
+DELETE http://localhost:8081/api/v1/resume/1
+Authorization: Bearer
 
 ### Test GoogleAuthHandler - Success
 GET http://localhost:8081/api/v1/auth/google
