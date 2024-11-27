@@ -1,4 +1,4 @@
-package handler
+package auth
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
-func (h *Handler) GoogleAuthHandler(ctx *gin.Context) {
+func (h *AuthHandler) GoogleAuthHandler(ctx *gin.Context) {
 	//configure google oauth2 settings
 	config := &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),

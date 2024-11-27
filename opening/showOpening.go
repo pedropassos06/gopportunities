@@ -1,9 +1,10 @@
-package handler
+package opening
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
@@ -16,22 +17,22 @@ import (
 // @Produce json
 // @Param id query string true "Opening ID"
 // @Success 200 {object} ShowOpeningResponse
-// @Failure 400 {object} ErrorResponse "ID query parameter is missing"
-// @Failure 404 {object} ErrorResponse "Opening not found"
+// @Failure 400 {object} helper.ErrorResponse "ID query parameter is missing"
+// @Failure 404 {object} helper.ErrorResponse "Opening not found"
 // @Router /opening [get]
-func (h *Handler) ShowOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandler) ShowOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		helper.SendError(ctx, http.StatusBadRequest, helper.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
 
 	opening := schemas.Opening{}
 
 	if err := h.DB.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "opening not found.")
+		helper.SendError(ctx, http.StatusNotFound, "opening not found.")
 		return
 	}
 
-	sendSuccess(ctx, "show-opening", opening)
+	helper.SendSuccess(ctx, "show-opening", opening)
 }

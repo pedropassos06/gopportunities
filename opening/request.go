@@ -1,10 +1,10 @@
-package handler
+package opening
 
-import "fmt"
+import (
+	"fmt"
 
-func errParamIsRequired(name, typ string) error {
-	return fmt.Errorf("param: %s (type %s) is required", name, typ)
-}
+	"github.com/pedropassos06/gopportunities/helper"
+)
 
 type CreateOpeningRequest struct {
 	Role             string `json:"role"`
@@ -19,28 +19,28 @@ type CreateOpeningRequest struct {
 
 func (r *CreateOpeningRequest) Validate() error {
 	if r.Role == "" {
-		return errParamIsRequired("role", "string")
+		return helper.ErrParamIsRequired("role", "string")
 	}
 	if r.Company == "" {
-		return errParamIsRequired("company", "string")
+		return helper.ErrParamIsRequired("company", "string")
 	}
 	if r.Location == "" {
-		return errParamIsRequired("location", "string")
+		return helper.ErrParamIsRequired("location", "string")
 	}
 	if r.TypeOfEmployment == "" {
-		return errParamIsRequired("type_of_employment", "string")
+		return helper.ErrParamIsRequired("type_of_employment", "string")
 	}
 	if r.Salary <= 0 {
-		return errParamIsRequired("salary", "int64")
+		return helper.ErrParamIsRequired("salary", "int64")
 	}
 	if r.CompanyLogoUrl == "" {
-		return errParamIsRequired("company_logo_url", "string")
+		return helper.ErrParamIsRequired("company_logo_url", "string")
 	}
 	if r.Description == "" {
-		return errParamIsRequired("description", "string")
+		return helper.ErrParamIsRequired("description", "string")
 	}
 	if r.Link == "" {
-		return errParamIsRequired("link", "string")
+		return helper.ErrParamIsRequired("link", "string")
 	}
 	return nil
 }
@@ -63,16 +63,4 @@ func (r *UpdateOpeningRequest) Validate() error {
 	}
 
 	return fmt.Errorf("at least one valid field must be provided")
-}
-
-type NewsletterSubscriptionRequest struct {
-	UserID uint   `json:"user_id"`
-	Email  string `json:"email"`
-}
-
-func (r *NewsletterSubscriptionRequest) Validate() error {
-	if r.Email == "" {
-		return errParamIsRequired("email", "string")
-	}
-	return nil
 }

@@ -1,9 +1,10 @@
-package handler
+package opening
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
@@ -16,17 +17,17 @@ import (
 // @Produce json
 // @Param request body CreateOpeningRequest true "Request body"
 // @Success 200 {object} CreateOpeningResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Failure 500 {object} helper.ErrorResponse
 // @Router /opening [post]
-func (h *Handler) CreateOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandler) CreateOpeningHandler(ctx *gin.Context) {
 	request := CreateOpeningRequest{}
 
 	ctx.BindJSON(&request)
 
 	if err := request.Validate(); err != nil {
 		h.Logger.Errf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		helper.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -43,9 +44,9 @@ func (h *Handler) CreateOpeningHandler(ctx *gin.Context) {
 
 	if err := h.DB.Create(&opening).Error; err != nil {
 		h.Logger.Errf("error creating opening: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error creating opening on database")
+		helper.SendError(ctx, http.StatusInternalServerError, "error creating opening on database")
 		return
 	}
 
-	sendSuccess(ctx, "create-opening", opening)
+	helper.SendSuccess(ctx, "create-opening", opening)
 }

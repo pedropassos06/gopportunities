@@ -1,4 +1,4 @@
-package handler
+package auth
 
 import (
 	"encoding/json"
@@ -18,25 +18,25 @@ var (
 	emailScope   = "https://www.googleapis.com/auth/userinfo.email"
 )
 
-func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
+func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 	// load OAuth2 configuration
 	config, err := setUpGoogleAuthClient()
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, "error setting up google auth client")
+		helper.SendError(ctx, http.StatusInternalServerError, "error setting up google auth client")
 		return
 	}
 
 	// retrieve auth code from request
 	code := ctx.Query("code")
 	if code == "" {
-		sendError(ctx, http.StatusBadRequest, "authorization code not found")
+		helper.SendError(ctx, http.StatusBadRequest, "authorization code not found")
 		return
 	}
 
 	// exchange auth code for access token
 	authToken, err := config.Exchange(ctx, code)
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, err.Error())
+		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -44,7 +44,7 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 	client := config.Client(ctx, authToken)
 	resp, err := client.Get(userInfoURL)
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, err.Error())
+		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	defer resp.Body.Close()
@@ -52,14 +52,14 @@ func (h *Handler) GoogleCallbackHandler(ctx *gin.Context) {
 	data, _ := io.ReadAll(resp.Body)
 	var userInfo map[string]interface{}
 	if err := json.Unmarshal(data, &userInfo); err != nil {
-		sendError(ctx, http.StatusInternalServerError, err.Error())
+		helper.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// generate JWT token
 	jwt, err := helper.GenerateJWT(userInfo)
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
+		helper.SendError(ctx, http.StatusInternalServerError, "failed to generate JWT")
 		return
 	}
 

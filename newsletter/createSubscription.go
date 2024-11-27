@@ -1,9 +1,10 @@
-package handler
+package newsletter
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
@@ -17,19 +18,19 @@ import (
 // @Param Authorization header string true "Bearer token"
 // @Param request body NewsletterSubscriptionRequest true "Newsletter subscription details"
 // @Success 200 {object} NewsletterSubscriptionResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Failure 500 {object} helper.ErrorResponse
 // @Router /newsletter/subscribe [post]
-func (h *Handler) SubscribeHandler(ctx *gin.Context) {
+func (h *NewsletterHandler) SubscribeHandler(ctx *gin.Context) {
 	var request NewsletterSubscriptionRequest
 
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		sendError(ctx, http.StatusBadRequest, "Invalid input")
+		helper.SendError(ctx, http.StatusBadRequest, "Invalid input")
 		return
 	}
 
 	if err := request.Validate(); err != nil {
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		helper.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -40,7 +41,7 @@ func (h *Handler) SubscribeHandler(ctx *gin.Context) {
 	}
 
 	if err := h.DB.Create(&subscription).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, "Failed to subscribe")
+		helper.SendError(ctx, http.StatusInternalServerError, "Failed to subscribe")
 		return
 	}
 
@@ -53,5 +54,5 @@ func (h *Handler) SubscribeHandler(ctx *gin.Context) {
 		Subscribed: subscription.Subscribed,
 	}
 
-	sendSuccess(ctx, "subscribe-handler", response)
+	helper.SendSuccess(ctx, "subscribe-handler", response)
 }

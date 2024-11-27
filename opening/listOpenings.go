@@ -1,9 +1,10 @@
-package handler
+package opening
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
@@ -15,9 +16,9 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} ListOpeningsResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 500 {object} helper.ErrorResponse
 // @Router /openings [get]
-func (h *Handler) ListOpeningsHandler(ctx *gin.Context) {
+func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 	// Check if any query parameters are provided
 	filters := make(map[string]interface{})
 	if role := ctx.Query("role"); role != "" {
@@ -40,24 +41,24 @@ func (h *Handler) ListOpeningsHandler(ctx *gin.Context) {
 	if len(filters) == 0 {
 		var openings []schemas.Opening
 		if err := h.DB.Find(&openings).Error; err != nil {
-			sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+			helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 			return
 		}
-		sendSuccess(ctx, "list-openings", openings)
+		helper.SendSuccess(ctx, "list-openings", openings)
 		return
 	}
 
 	// Otherwise, apply filters
 	openings, err := h.filterOpenings(filters)
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+		helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
 	}
-	sendSuccess(ctx, "list-filtered-openings", openings)
+	helper.SendSuccess(ctx, "list-filtered-openings", openings)
 }
 
 // filters openings based on a filters array
-func (h *Handler) filterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
+func (h *OpeningHandler) filterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
 	var openings []schemas.Opening
 
 	// start the query

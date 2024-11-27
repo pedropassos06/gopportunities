@@ -2,8 +2,11 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/pedropassos06/gopportunities/auth"
 	"github.com/pedropassos06/gopportunities/config"
-	"github.com/pedropassos06/gopportunities/handler"
+	"github.com/pedropassos06/gopportunities/newsletter"
+	"github.com/pedropassos06/gopportunities/opening"
+	"github.com/pedropassos06/gopportunities/resume"
 	"github.com/pedropassos06/gopportunities/router"
 )
 
@@ -32,9 +35,13 @@ func main() {
 		return
 	}
 
-	handler := handler.NewHandler(config.GetSQLite(), logger)
 	ginRouter := gin.Default()
+	// init specific handlers
+	authHandler := auth.NewAuthHandler(config.GetSQLite(), logger)
+	openingHandler := opening.NewOpeningHandler(config.GetSQLite(), logger)
+	newsletterHandler := newsletter.NewNewsletterHandler(config.GetSQLite(), logger)
+	resumeHandler := resume.NewResumeHandler(config.GetSQLite(), logger)
 
 	// Initialize Router
-	router.InitializeRoutes(ginRouter, handler)
+	router.InitializeRoutes(ginRouter, authHandler, resumeHandler, openingHandler, newsletterHandler)
 }

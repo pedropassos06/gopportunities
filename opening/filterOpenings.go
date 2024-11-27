@@ -1,14 +1,15 @@
-package handler
+package opening
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
 // handler for filtering listings
-func (h *Handler) ListFilteredOpeningsHandler(ctx *gin.Context) {
+func (h *OpeningHandler) ListFilteredOpeningsHandler(ctx *gin.Context) {
 	filters := make(map[string]interface{})
 
 	// read query params and add to filters
@@ -28,15 +29,15 @@ func (h *Handler) ListFilteredOpeningsHandler(ctx *gin.Context) {
 	// Call the generic filter function
 	openings, err := h.FilterOpenings(filters)
 	if err != nil {
-		sendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+		helper.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
 		return
 	}
 
-	sendSuccess(ctx, "list-filtered-openings", openings)
+	helper.SendSuccess(ctx, "list-filtered-openings", openings)
 }
 
 // filters openings based on a filters array
-func (h *Handler) FilterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
+func (h *OpeningHandler) FilterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
 	var openings []schemas.Opening
 
 	// start the query

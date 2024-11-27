@@ -1,9 +1,10 @@
-package handler
+package opening
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	helper "github.com/pedropassos06/gopportunities/helper"
 	"github.com/pedropassos06/gopportunities/schemas"
 )
 
@@ -17,30 +18,30 @@ import (
 // @Param id query string true "Opening ID"
 // @Param opening body UpdateOpeningRequest true "Opening data to update"
 // @Success 200 {object} UpdateOpeningResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Failure 404 {object} helper.ErrorResponse
+// @Failure 500 {object} helper.ErrorResponse
 // @Router /opening [put]
-func (h *Handler) UpdateOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 	request := UpdateOpeningRequest{}
 
 	ctx.BindJSON(&request)
 
 	if err := request.Validate(); err != nil {
 		h.Logger.Errf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		helper.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	id := ctx.Query("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		helper.SendError(ctx, http.StatusBadRequest, helper.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
 	opening := schemas.Opening{}
 
 	if err := h.DB.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "opening not found")
+		helper.SendError(ctx, http.StatusNotFound, "opening not found")
 		return
 	}
 
@@ -72,9 +73,9 @@ func (h *Handler) UpdateOpeningHandler(ctx *gin.Context) {
 	// Save opening
 	if err := h.DB.Save(&opening).Error; err != nil {
 		h.Logger.Errf("error updating opening: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error updating opening")
+		helper.SendError(ctx, http.StatusInternalServerError, "error updating opening")
 		return
 	}
 
-	sendSuccess(ctx, "update-opening", opening)
+	helper.SendSuccess(ctx, "update-opening", opening)
 }

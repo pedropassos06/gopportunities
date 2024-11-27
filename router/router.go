@@ -5,14 +5,17 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pedropassos06/gopportunities/auth"
 	"github.com/pedropassos06/gopportunities/docs"
-	"github.com/pedropassos06/gopportunities/handler"
 	"github.com/pedropassos06/gopportunities/middleware"
+	"github.com/pedropassos06/gopportunities/newsletter"
+	"github.com/pedropassos06/gopportunities/opening"
+	"github.com/pedropassos06/gopportunities/resume"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func InitializeRoutes(r *gin.Engine, h *handler.Handler) {
+func InitializeRoutes(r *gin.Engine, ah *auth.AuthHandler, rh *resume.ResumeHandler, oh *opening.OpeningHandler, nh *newsletter.NewsletterHandler) {
 	// define base path for our api
 	basePath := "/api/v1"
 	docs.SwaggerInfo.BasePath = basePath
@@ -20,21 +23,20 @@ func InitializeRoutes(r *gin.Engine, h *handler.Handler) {
 	// public routes
 	public := r.Group("/api/v1")
 	{
-		public.GET("/auth/google", h.GoogleAuthHandler)
-		public.GET("/auth/google/callback", h.GoogleCallbackHandler)
-		public.GET("/ping", h.PingHandler)
+		public.GET("/auth/google", ah.GoogleAuthHandler)
+		public.GET("/auth/google/callback", ah.GoogleCallbackHandler)
 	}
 
 	// use auth middleware - protected routes
 	protected := r.Group("/api/v1", middleware.AuthMiddleware())
 	{
-		protected.GET("/opening", h.ShowOpeningHandler)
-		protected.POST("/opening", h.CreateOpeningHandler)
-		protected.DELETE("/opening", h.DeleteOpeningHandler)
-		protected.PUT("/opening", h.UpdateOpeningHandler)
-		protected.GET("/openings", h.ListOpeningsHandler)
-		protected.POST("/resumes/upload/:user_id", h.UploadResumeHandler)
-		protected.POST("/newsletter/subscribe", h.SubscribeHandler)
+		protected.GET("/opening", oh.ShowOpeningHandler)
+		protected.POST("/opening", oh.CreateOpeningHandler)
+		protected.DELETE("/opening", oh.DeleteOpeningHandler)
+		protected.PUT("/opening", oh.UpdateOpeningHandler)
+		protected.GET("/openings", oh.ListOpeningsHandler)
+		protected.POST("/resumes/upload/:user_id", rh.UploadResumeHandler)
+		protected.POST("/newsletter/subscribe", nh.SubscribeHandler)
 	}
 
 	// Initialize Swagger
