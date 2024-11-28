@@ -8,11 +8,12 @@ import (
 	"github.com/pedropassos06/gopportunities/opening"
 	"github.com/pedropassos06/gopportunities/resume"
 	"github.com/pedropassos06/gopportunities/router"
+	"github.com/pedropassos06/gopportunities/utils"
 )
 
 func init() {
 	// Load .env file
-	config.LoadEnv()
+	utils.LoadEnv()
 }
 
 func main() {
