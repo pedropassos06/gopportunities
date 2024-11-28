@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	schemas "github.com/pedropassos06/gopportunities/schemas"
@@ -72,9 +73,9 @@ func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
 
 // sets up google auth client configuration
 func setUpGoogleAuthClient() (*oauth2.Config, error) {
-	clientID := utils.LoadEnvVariable("GOOGLE_CLIENT_ID")
-	clientSecret := utils.LoadEnvVariable("GOOGLE_CLIENT_SECRET")
-	redirectURL := utils.LoadEnvVariable("GOOGLE_REDIRECT_URL")
+	clientID := os.Getenv("GOOGLE_CLIENT_ID")
+	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	redirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
 
 	return &oauth2.Config{
 		ClientID:     clientID,
