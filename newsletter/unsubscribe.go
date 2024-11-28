@@ -11,17 +11,17 @@ import (
 // @BasePath /api/v1
 
 // @Summary Unsubscribe from Newsletter
-// @Descriptions unsubscribe from newsletter given an email
+// @Description unsubscribe from newsletter given an email
 // @Tags Newsletter
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
 // @Param user_email path string true "Email of user to be unsubscribed"
 // @Success 200 {object} NewsletterUnsubscribeResponse
-// @Failure 400 {obect} utils.ErrorResponse
-// @Failure 404 {obect} utils.ErrorResponse
-// @Failure 500 {obect} utils.ErrorResponse
-// @Route /newsletter/unsubscribe/{user_email} [put]
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Router /newsletter/unsubscribe/{user_email} [put]
 func (nh *NewsletterHandler) UnsubscribeHandler(ctx *gin.Context) {
 	// get email from path
 	email := ctx.Param("user_email")
