@@ -16,10 +16,10 @@ import (
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param role query string true "Role"
-// @Param location query string true "Location"
-// @Param company query string true "Company"
-// @Param minSalary query string true "Minimum Salary"
+// @Param role query string false "Role"
+// @Param location query string false "Location"
+// @Param company query string false "Company"
+// @Param minSalary query string false "Minimum Salary"
 // @Success 200 {object} ListOpeningsResponse
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
