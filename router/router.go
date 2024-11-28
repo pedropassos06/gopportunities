@@ -30,13 +30,16 @@ func InitializeRoutes(r *gin.Engine, ah *auth.AuthHandler, rh *resume.ResumeHand
 	// use auth middleware - protected routes
 	protected := r.Group("/api/v1", middleware.AuthMiddleware())
 	{
+		// opening endpoints
 		protected.GET("/opening", oh.ShowOpeningHandler)
 		protected.POST("/opening", oh.CreateOpeningHandler)
 		protected.DELETE("/opening", oh.DeleteOpeningHandler)
 		protected.PUT("/opening", oh.UpdateOpeningHandler)
 		protected.GET("/openings", oh.ListOpeningsHandler)
+		// resume endpoints
 		protected.POST("/resume/upload/:user_id", rh.UploadResumeHandler)
 		protected.DELETE("/resume/:resume_id", rh.DeleteResumeHandler)
+		// newsletter endpoints
 		protected.POST("/newsletter/subscribe", nh.SubscribeHandler)
 	}
 
