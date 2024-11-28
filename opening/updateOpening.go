@@ -15,6 +15,7 @@ import (
 // @Tags Openings
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id query string true "Opening ID"
 // @Param opening body UpdateOpeningRequest true "Opening data to update"
 // @Success 200 {object} UpdateOpeningResponse

@@ -15,6 +15,7 @@ import (
 // @Tags Openings
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {object} ListOpeningsResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /openings [get]

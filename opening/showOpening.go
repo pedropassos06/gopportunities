@@ -15,6 +15,7 @@ import (
 // @Tags Openings
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id query string true "Opening ID"
 // @Success 200 {object} ShowOpeningResponse
 // @Failure 400 {object} utils.ErrorResponse "ID query parameter is missing"

@@ -16,6 +16,7 @@ import (
 // @Tags Openings
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id query string true "Opening id"
 // @Success 200 {object} DeleteOpeningResponse
 // @Failure 400 {object} utils.ErrorResponse
