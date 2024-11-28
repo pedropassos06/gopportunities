@@ -16,7 +16,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
+// @Param role query string true "Role"
+// @Param location query string true "Location"
+// @Param company query string true "Company"
+// @Param minSalary query string true "Minimum Salary"
 // @Success 200 {object} ListOpeningsResponse
+// @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /openings [get]
 func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
@@ -31,9 +36,6 @@ func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 	if company := ctx.Query("company"); company != "" {
 		filters["company"] = company
 	}
-	if remote := ctx.Query("remote"); remote != "" {
-		filters["remote"] = remote
-	}
 	if minSalary := ctx.Query("minSalary"); minSalary != "" {
 		filters["salary >"] = minSalary
 	}
@@ -42,7 +44,7 @@ func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 	if len(filters) == 0 {
 		var openings []schemas.Opening
 		if err := h.DB.Find(&openings).Error; err != nil {
-			utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+			utils.SendError(ctx, http.StatusNotFound, "could not retrieve openings")
 			return
 		}
 		utils.SendSuccess(ctx, "list-openings", openings)
