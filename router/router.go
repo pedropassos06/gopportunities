@@ -42,6 +42,7 @@ func InitializeRoutes(r *gin.Engine, ah *auth.AuthHandler, rh *resume.ResumeHand
 		protected.GET("/resume/:user_id", rh.GetResumeHandler)
 		// newsletter endpoints
 		protected.POST("/newsletter/subscribe", nh.SubscribeHandler)
+		protected.PUT("/newsletter/unsubscribe/:user_email", nh.UnsubscribeHandler)
 	}
 
 	// Initialize Swagger
