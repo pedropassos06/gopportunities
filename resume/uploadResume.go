@@ -16,9 +16,10 @@ import (
 
 // @Summary Upload Resume
 // @Description Uploads a resume to the database
-// @Tags Resumes
+// @Tags Resume
 // @Accept multipart/form-data
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param user_id path string true "User ID of the resume owner"
 // @Param resume formData file true "Resume file to upload"
 // @Success 200 {object} UploadResumeResponse
