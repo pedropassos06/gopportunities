@@ -8,6 +8,21 @@ import (
 	"github.com/pedropassos06/gopportunities/utils"
 )
 
+// @BasePath /api/v1
+
+// DeleteResumeHandler godoc
+// @Summary Deletes Resume
+// @Description deletes a resume given its id
+// @Tags Resume
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer Token"
+// @Param resume_id path string true "ID of the resume"
+// @Success 200 {object} DeleteResumeResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Router /resume/{resume_id} [delete]
 func (h *ResumeHandler) DeleteResumeHandler(ctx *gin.Context) {
 	// grab resume id
 	id := ctx.Param("resume_id")
