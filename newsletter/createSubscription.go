@@ -15,7 +15,7 @@ import (
 // @Accept json
 // @Produce json
 // @Tags Newsletter
-// @Param Authorization header string true "Bearer token"
+// @Param Authorization header string true "Bearer Token"
 // @Param request body NewsletterSubscriptionRequest true "Newsletter subscription details"
 // @Success 200 {object} NewsletterSubscriptionResponse
 // @Failure 400 {object} utils.ErrorResponse
