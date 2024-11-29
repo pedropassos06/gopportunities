@@ -43,12 +43,17 @@ func main() {
 	ginRouter := gin.Default()
 	// init specific handlers
 	authHandler := auth.NewAuthHandler()
-	newsletterHandler := newsletter.NewNewsletterHandler(config.GetSQLite(), logger)
 	resumeHandler := resume.NewResumeHandler(config.GetSQLite(), logger)
 
+	// init opening handler
 	openingRepo := opening.NewOpeningRepository(config.GetSQLite())
 	openingUsecase := opening.NewOpeningUsecase(openingRepo)
 	openingHandler := opening.NewOpeningHandler(openingUsecase)
+
+	// init newsletter handler
+	newsletterRepo := newsletter.NewNewsletterRepository(config.GetSQLite())
+	newsletterUsecase := newsletter.NewNewsletterUsecase(newsletterRepo)
+	newsletterHandler := newsletter.NewNewsletterHandler(newsletterUsecase)
 
 	// Initialize Router
 	router.InitializeRoutes(ginRouter, authHandler, resumeHandler, openingHandler, newsletterHandler)
