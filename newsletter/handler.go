@@ -1,19 +1,21 @@
 package newsletter
 
 import (
-	"github.com/pedropassos06/gopportunities/config"
-	"gorm.io/gorm"
+	"github.com/gin-gonic/gin"
 )
 
-type NewsletterHandler struct {
-	DB     *gorm.DB
-	Logger config.Logger
+type NewsletterHandler interface {
+	SubscribeHandler(ctx *gin.Context)
+	UnsubscribeHandler(ctx *gin.Context)
+}
+
+type NewsletterHandlerImpl struct {
+	Usecase NewsletterUsecase
 }
 
 // NewNewsletterHandler initializes and returns a NewsletterHandler instance
-func NewNewsletterHandler(db *gorm.DB, logger config.Logger) *NewsletterHandler {
-	return &NewsletterHandler{
-		DB:     db,
-		Logger: logger,
+func NewNewsletterHandler(usecase NewsletterUsecase) NewsletterHandler {
+	return &NewsletterHandlerImpl{
+		Usecase: usecase,
 	}
 }
