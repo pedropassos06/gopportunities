@@ -1,19 +1,22 @@
 package resume
 
 import (
-	"github.com/pedropassos06/gopportunities/config"
-	"gorm.io/gorm"
+	"github.com/gin-gonic/gin"
 )
 
-type ResumeHandler struct {
-	DB     *gorm.DB
-	Logger config.Logger
+type ResumeHandler interface {
+	UploadResumeHandler(ctx *gin.Context)
+	GetResumeHandler(ctx *gin.Context)
+	DeleteResumeHandler(ctx *gin.Context)
+}
+
+type ResumeHandlerImpl struct {
+	Usecase ResumeUsecase
 }
 
 // NewResumeHandler initializes and returns a ResumeHandler instance
-func NewResumeHandler(db *gorm.DB, logger config.Logger) *ResumeHandler {
-	return &ResumeHandler{
-		DB:     db,
-		Logger: logger,
+func NewResumeHandler(usecase ResumeUsecase) ResumeHandler {
+	return &ResumeHandlerImpl{
+		Usecase: usecase,
 	}
 }
