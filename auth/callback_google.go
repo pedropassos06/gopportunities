@@ -19,7 +19,7 @@ var (
 	emailScope   = "https://www.googleapis.com/auth/userinfo.email"
 )
 
-func (h *AuthHandler) GoogleCallbackHandler(ctx *gin.Context) {
+func (h *AuthHandlerImpl) GoogleCallbackHandler(ctx *gin.Context) {
 	// load OAuth2 configuration
 	config, err := setUpGoogleAuthClient()
 	if err != nil {
