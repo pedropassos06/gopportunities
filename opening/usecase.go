@@ -8,7 +8,7 @@ type OpeningUsecase interface {
 	CreateOpening(opening *schemas.Opening) error
 	GetOpeningByID(id uint) (*schemas.Opening, error)
 	GetAllOpenings() ([]*schemas.Opening, error)
-	UpdateOpening(opening *schemas.Opening, request *schemas.Opening) error
+	UpdateOpening(opening *schemas.Opening) error
 	DeleteOpening(id uint) error
 	GetFilteredOpenings(filters map[string]interface{}) ([]schemas.Opening, error)
 }
@@ -33,7 +33,7 @@ func (u *OpeningUsecaseImpl) GetAllOpenings() ([]*schemas.Opening, error) {
 	return u.repo.GetAllOpenings()
 }
 
-func (u *OpeningUsecaseImpl) UpdateOpening(opening *schemas.Opening, request *schemas.Opening) error {
+func (u *OpeningUsecaseImpl) UpdateOpening(opening *schemas.Opening) error {
 	return u.repo.UpdateOpening(opening)
 }
 

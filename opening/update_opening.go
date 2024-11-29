@@ -45,15 +45,40 @@ func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	// Usecase to update opening
+	// find opening first
 	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
 	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, "Opening not found")
 		return
 	}
 
-	// Apply updates from the request to the opening
-	if err := h.Usecase.UpdateOpening(opening, &request); err != nil {
+	// Update only the fields that are provided in the request
+	if request.Role != "" {
+		opening.Role = request.Role
+	}
+	if request.Company != "" {
+		opening.Company = request.Company
+	}
+	if request.Location != "" {
+		opening.Location = request.Location
+	}
+	if request.TypeOfEmployment != "" {
+		opening.TypeOfEmployment = request.TypeOfEmployment
+	}
+	if request.Salary != 0 { // Assuming Salary is a numeric value and 0 is considered as "not provided"
+		opening.Salary = request.Salary
+	}
+	if request.CompanyLogoUrl != "" {
+		opening.CompanyLogoUrl = request.CompanyLogoUrl
+	}
+	if request.Description != "" {
+		opening.Description = request.Description
+	}
+	if request.Link != "" {
+		opening.Link = request.Link
+	}
+	// Now update the opening with the new data
+	if err := h.Usecase.UpdateOpening(opening); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "Error updating opening.")
 		return
 	}
