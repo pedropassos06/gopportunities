@@ -11,6 +11,10 @@ import (
 	"github.com/pedropassos06/gopportunities/utils"
 )
 
+var (
+	dbPath = "./db/main.db"
+)
+
 func init() {
 	// Load .env file
 	utils.LoadEnv()
@@ -22,7 +26,7 @@ func main() {
 
 	// Create SQLite instance
 	sqlite := &config.SQLite{
-		Path:   "./db/main.db",
+		Path:   dbPath,
 		Logger: logger,
 	}
 
