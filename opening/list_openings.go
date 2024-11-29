@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/schemas"
 	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -25,8 +24,25 @@ import (
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /openings [get]
 func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
-	// Check if any query parameters are provided
+	// Prepare filters from query parameters
+	filters := h.prepareFilters(ctx)
+
+	// Get filtered openings from usecase
+	openings, err := h.Usecase.GetFilteredOpenings(filters)
+	if err != nil {
+		utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
+		return
+	}
+
+	// Send success response
+	utils.SendSuccess(ctx, "list-openings", openings)
+}
+
+// prepareFilters extracts filter parameters from the query
+func (h *OpeningHandler) prepareFilters(ctx *gin.Context) map[string]interface{} {
 	filters := make(map[string]interface{})
+
+	// Extract query parameters and add to filters if present
 	if role := ctx.Query("role"); role != "" {
 		filters["role"] = role
 	}
@@ -40,42 +56,5 @@ func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 		filters["salary >"] = minSalary
 	}
 
-	// If no filters are provided, list all openings
-	if len(filters) == 0 {
-		var openings []schemas.Opening
-		if err := h.DB.Find(&openings).Error; err != nil {
-			utils.SendError(ctx, http.StatusNotFound, "could not retrieve openings")
-			return
-		}
-		utils.SendSuccess(ctx, "list-openings", openings)
-		return
-	}
-
-	// Otherwise, apply filters
-	openings, err := h.filterOpenings(filters)
-	if err != nil {
-		utils.SendError(ctx, http.StatusInternalServerError, "could not retrieve openings")
-		return
-	}
-	utils.SendSuccess(ctx, "list-filtered-openings", openings)
-}
-
-// filters openings based on a filters array
-func (h *OpeningHandler) filterOpenings(filters map[string]interface{}) ([]schemas.Opening, error) {
-	var openings []schemas.Opening
-
-	// start the query
-	query := h.DB.Model(&schemas.Opening{})
-
-	// dynamically apply filters
-	for key, value := range filters {
-		query = query.Where(key+" = ?", value)
-	}
-
-	// execute the query
-	if err := query.Find(&openings).Error; err != nil {
-		return nil, err
-	}
-
-	return openings, nil
+	return filters
 }

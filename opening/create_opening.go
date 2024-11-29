@@ -22,30 +22,16 @@ import (
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /opening [post]
 func (h *OpeningHandler) CreateOpeningHandler(ctx *gin.Context) {
-	request := CreateOpeningRequest{}
-
-	ctx.BindJSON(&request)
-
-	if err := request.Validate(); err != nil {
-		h.Logger.Errf("validation error: %v", err.Error())
+	var opening schemas.Opening
+	if err := ctx.BindJSON(&opening); err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	opening := schemas.Opening{
-		Role:             request.Role,
-		Company:          request.Company,
-		Location:         request.Location,
-		TypeOfEmployment: request.TypeOfEmployment,
-		Salary:           request.Salary,
-		CompanyLogoUrl:   request.CompanyLogoUrl,
-		Description:      request.Description,
-		Link:             request.Link,
-	}
-
-	if err := h.DB.Create(&opening).Error; err != nil {
-		h.Logger.Errf("error creating opening: %v", err.Error())
-		utils.SendError(ctx, http.StatusInternalServerError, "error creating opening on database")
+	// Create opening
+	err := h.Usecase.CreateOpening(&opening)
+	if err != nil {
+		utils.SendError(ctx, http.StatusInternalServerError, "could not create opening")
 		return
 	}
 

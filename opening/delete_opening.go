@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/schemas"
 	"github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -28,15 +27,22 @@ func (h *OpeningHandler) DeleteOpeningHandler(ctx *gin.Context) {
 		utils.SendError(ctx, http.StatusBadRequest, utils.ErrParamIsRequired("id", "queryParameter").Error())
 	}
 
-	opening := schemas.Opening{}
+	// Convert the ID to a uint
+	uint64ID, err := utils.StringToUint(id)
+	if err != nil {
+		utils.SendError(ctx, http.StatusBadRequest, "id must be a number")
+		return
+	}
 
-	// Find opening (need to find so then you can delete)
-	if err := h.DB.First(&opening, id).Error; err != nil {
+	// Find opening
+	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
+	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, fmt.Sprintf("opening with id: %s not found", id))
 		return
 	}
+
 	// Delete
-	if err := h.DB.Delete(&opening, id).Error; err != nil {
+	if err = h.Usecase.DeleteOpening(uint(uint64ID)); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, fmt.Sprintf("error deleting opening with id: %s", id))
 		return
 	}

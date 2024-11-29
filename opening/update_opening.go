@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/schemas"
 	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -24,59 +23,40 @@ import (
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /opening [put]
 func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
-	request := UpdateOpeningRequest{}
-
-	ctx.BindJSON(&request)
-
-	if err := request.Validate(); err != nil {
-		h.Logger.Errf("validation error: %v", err.Error())
-		utils.SendError(ctx, http.StatusBadRequest, err.Error())
+	// Bind the request JSON to the UpdateOpeningRequest struct
+	var request UpdateOpeningRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		utils.SendError(ctx, http.StatusBadRequest, "Invalid input data.")
 		return
 	}
 
-	id := ctx.Query("id")
+	// Retrieve the opening ID from query params
+	id := ctx.DefaultQuery("id", "")
 	if id == "" {
 		utils.SendError(ctx, http.StatusBadRequest, utils.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
-	opening := schemas.Opening{}
 
-	if err := h.DB.First(&opening, id).Error; err != nil {
-		utils.SendError(ctx, http.StatusNotFound, "opening not found")
+	// Convert the ID to a uint
+	uint64ID, err := utils.StringToUint(id)
+	if err != nil {
+		utils.SendError(ctx, http.StatusBadRequest, "id must be a number")
 		return
 	}
 
-	// update opening
-	if request.Role != "" {
-		opening.Role = request.Role
-	}
-	if request.Company != "" {
-		opening.Company = request.Company
-	}
-	if request.Location != "" {
-		opening.Location = request.Location
-	}
-	if request.TypeOfEmployment != "" {
-		opening.TypeOfEmployment = request.TypeOfEmployment
-	}
-	if request.Salary <= 0 {
-		opening.Salary = request.Salary
-	}
-	if request.CompanyLogoUrl != "" {
-		opening.CompanyLogoUrl = request.CompanyLogoUrl
-	}
-	if request.Description != "" {
-		opening.Description = request.Description
-	}
-	if request.Link != "" {
-		opening.Link = request.Link
-	}
-	// Save opening
-	if err := h.DB.Save(&opening).Error; err != nil {
-		h.Logger.Errf("error updating opening: %v", err.Error())
-		utils.SendError(ctx, http.StatusInternalServerError, "error updating opening")
+	// Usecase to update opening
+	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
+	if err != nil {
+		utils.SendError(ctx, http.StatusNotFound, "Opening not found")
 		return
 	}
 
+	// Apply updates from the request to the opening
+	if err := h.Usecase.UpdateOpening(opening, &request); err != nil {
+		utils.SendError(ctx, http.StatusInternalServerError, "Error updating opening.")
+		return
+	}
+
+	// Return the updated opening
 	utils.SendSuccess(ctx, "update-opening", opening)
 }

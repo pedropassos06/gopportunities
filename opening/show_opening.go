@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/schemas"
 	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -28,10 +27,15 @@ func (h *OpeningHandler) ShowOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	opening := schemas.Opening{}
+	uint64ID, err := utils.StringToUint(id)
+	if err != nil {
+		utils.SendError(ctx, http.StatusBadRequest, "id must be a number")
+		return
+	}
 
-	if err := h.DB.First(&opening, id).Error; err != nil {
-		utils.SendError(ctx, http.StatusNotFound, "opening not found.")
+	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
+	if err != nil {
+		utils.SendError(ctx, http.StatusNotFound, "Opening not found")
 		return
 	}
 
