@@ -15,7 +15,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func InitializeRoutes(r *gin.Engine, ah auth.AuthHandler, rh *resume.ResumeHandler, oh opening.OpeningHandler, nh newsletter.NewsletterHandler) {
+func InitializeRoutes(r *gin.Engine, ah auth.AuthHandler, rh resume.ResumeHandler, oh opening.OpeningHandler, nh newsletter.NewsletterHandler) {
 	// define base path for our api
 	basePath := "/api/v1"
 	docs.SwaggerInfo.BasePath = basePath
