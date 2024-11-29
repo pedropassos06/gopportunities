@@ -42,7 +42,7 @@ func main() {
 
 	ginRouter := gin.Default()
 	// init specific handlers
-	authHandler := auth.NewAuthHandler(config.GetSQLite(), logger)
+	authHandler := auth.NewAuthHandler()
 	newsletterHandler := newsletter.NewNewsletterHandler(config.GetSQLite(), logger)
 	resumeHandler := resume.NewResumeHandler(config.GetSQLite(), logger)
 
