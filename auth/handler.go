@@ -1,18 +1,14 @@
 package auth
 
-import (
-	"github.com/pedropassos06/gopportunities/config"
-	"gorm.io/gorm"
-)
+import "github.com/gin-gonic/gin"
 
-type AuthHandler struct {
-	DB     *gorm.DB
-	Logger config.Logger
+type AuthHandler interface {
+	GoogleAuthHandler(c *gin.Context)
+	GoogleCallbackHandler(c *gin.Context)
 }
 
-func NewAuthHandler(db *gorm.DB, logger config.Logger) *AuthHandler {
-	return &AuthHandler{
-		DB:     db,
-		Logger: logger,
-	}
+type AuthHandlerImpl struct{}
+
+func NewAuthHandler() AuthHandler {
+	return &AuthHandlerImpl{}
 }
