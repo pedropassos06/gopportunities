@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pedropassos06/gopportunities/schemas"
 	"github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -17,12 +16,12 @@ import (
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
 // @Param user_email path string true "Email of user to be unsubscribed"
-// @Success 200 {object} NewsletterUnsubscribeResponse
+// @Success 200 {object} schemas.NewsletterSubscription
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /newsletter/unsubscribe/{user_email} [put]
-func (nh *NewsletterHandler) UnsubscribeHandler(ctx *gin.Context) {
+func (h *NewsletterHandlerImpl) UnsubscribeHandler(ctx *gin.Context) {
 	// get email from path
 	email := ctx.Param("user_email")
 	if email == "" {
@@ -30,19 +29,15 @@ func (nh *NewsletterHandler) UnsubscribeHandler(ctx *gin.Context) {
 		return
 	}
 
-	var subscription schemas.NewsletterSubscription
-
 	// check if email found
-	if err := nh.DB.First(&subscription, "email = ?", email).Error; err != nil {
+	subscription, err := h.Usecase.Find(email)
+	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, "email not found in newsletter list")
 		return
 	}
 
-	// set subscribed param as false
-	subscription.Subscribed = false
-
 	// update record in db
-	if err := nh.DB.Save(&subscription).Error; err != nil {
+	if err := h.Usecase.Unsubscribe(subscription).Error; err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "unable to unsubscribe")
 		return
 	}
