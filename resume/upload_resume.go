@@ -22,11 +22,11 @@ import (
 // @Param Authorization header string true "Bearer Token"
 // @Param user_id path string true "User ID of the resume owner"
 // @Param resume formData file true "Resume file to upload"
-// @Success 200 {object} UploadResumeResponse
+// @Success 200 {object} schemas.Resume
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /resume/upload/{user_id} [post]
-func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
+func (h *ResumeHandlerImpl) UploadResumeHandler(ctx *gin.Context) {
 	// grab user id from Params
 	userIDStr := ctx.Param("user_id")
 	if userIDStr == "" {
@@ -61,8 +61,7 @@ func (h *ResumeHandler) UploadResumeHandler(ctx *gin.Context) {
 		Filepath: filePath,
 	}
 
-	if err := h.DB.Create(&resume).Error; err != nil {
-		h.Logger.Errf("error uploading resume: %v", err.Error())
+	if err := h.Usecase.UploadResume(resume); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "error uploading resume on database")
 		return
 	}
