@@ -21,7 +21,7 @@ import (
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /opening [post]
-func (h *OpeningHandler) CreateOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandlerImpl) CreateOpeningHandler(ctx *gin.Context) {
 	var opening schemas.Opening
 	if err := ctx.BindJSON(&opening); err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, err.Error())

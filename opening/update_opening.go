@@ -23,7 +23,7 @@ import (
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /opening [put]
-func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandlerImpl) UpdateOpeningHandler(ctx *gin.Context) {
 	// Bind the request JSON to the UpdateOpeningRequest struct
 	var request schemas.Opening
 	if err := ctx.ShouldBindJSON(&request); err != nil {

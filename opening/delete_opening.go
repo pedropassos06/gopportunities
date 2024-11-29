@@ -21,7 +21,7 @@ import (
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 404 {object} utils.ErrorResponse
 // @Router /opening [delete]
-func (h *OpeningHandler) DeleteOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandlerImpl) DeleteOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
 		utils.SendError(ctx, http.StatusBadRequest, utils.ErrParamIsRequired("id", "queryParameter").Error())

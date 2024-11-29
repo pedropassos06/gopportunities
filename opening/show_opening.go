@@ -20,7 +20,7 @@ import (
 // @Failure 400 {object} utils.ErrorResponse "ID query parameter is missing"
 // @Failure 404 {object} utils.ErrorResponse "Opening not found"
 // @Router /opening [get]
-func (h *OpeningHandler) ShowOpeningHandler(ctx *gin.Context) {
+func (h *OpeningHandlerImpl) ShowOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
 		utils.SendError(ctx, http.StatusBadRequest, utils.ErrParamIsRequired("id", "queryParameter").Error())

@@ -23,7 +23,7 @@ import (
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /openings [get]
-func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
+func (h *OpeningHandlerImpl) ListOpeningsHandler(ctx *gin.Context) {
 	// Prepare filters from query parameters
 	filters := h.prepareFilters(ctx)
 
@@ -39,7 +39,7 @@ func (h *OpeningHandler) ListOpeningsHandler(ctx *gin.Context) {
 }
 
 // prepareFilters extracts filter parameters from the query
-func (h *OpeningHandler) prepareFilters(ctx *gin.Context) map[string]interface{} {
+func (h *OpeningHandlerImpl) prepareFilters(ctx *gin.Context) map[string]interface{} {
 	filters := make(map[string]interface{})
 
 	// Extract query parameters and add to filters if present
