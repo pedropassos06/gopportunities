@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pedropassos06/gopportunities/schemas"
 	utils "github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -16,7 +17,7 @@ import (
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
 // @Param id query string true "Opening ID"
-// @Param opening body UpdateOpeningRequest true "Opening data to update"
+// @Param opening body schemas.Opening true "Opening data to update"
 // @Success 200 {object} UpdateOpeningResponse
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 404 {object} utils.ErrorResponse
@@ -24,7 +25,7 @@ import (
 // @Router /opening [put]
 func (h *OpeningHandler) UpdateOpeningHandler(ctx *gin.Context) {
 	// Bind the request JSON to the UpdateOpeningRequest struct
-	var request UpdateOpeningRequest
+	var request schemas.Opening
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, "Invalid input data.")
 		return

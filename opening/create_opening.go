@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param request body CreateOpeningRequest true "Request body"
+// @Param request body schemas.Opening true "Request body"
 // @Success 200 {object} CreateOpeningResponse
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
