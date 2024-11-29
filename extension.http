@@ -1,13 +1,13 @@
 ### Test ShowOpeningHandler - Success
-GET http://localhost:8081/api/v1/opening?id=9
+GET http://localhost:8080/api/v1/opening?id=9
 Authorization: Bearer valid-token
 
 ### Test ListOpeningsHandler - Success
-GET http://localhost:8081/api/v1/openings
+GET http://localhost:8080/api/v1/openings
 Authorization: Bearer valid-token
 
 ### Test CreateOpeningHandler - Success
-POST http://localhost:8081/api/v1/opening
+POST http://localhost:8080/api/v1/opening
 Content-Type: application/json
 Authorization: Bearer valid-token
 
@@ -23,7 +23,7 @@ Authorization: Bearer valid-token
 }
 
 ### Test UpdateOpeningHandler - Success
-PUT http://localhost:8081/api/v1/opening?id=12
+PUT http://localhost:8080/api/v1/opening?id=12
 Content-Type: application/json
 Authorization: Bearer valid-token
 
@@ -32,11 +32,11 @@ Authorization: Bearer valid-token
 }
 
 ### Test DeleteOpeningHandler - Success
-DELETE http://localhost:8081/api/v1/opening?id=12
+DELETE http://localhost:8080/api/v1/opening?id=12
 Authorization: Bearer valid-token
 
 ### Test SubscribeHandler - Success
-POST http://localhost:8081/api/v1/newsletter/subscribe
+POST http://localhost:8080/api/v1/newsletter/subscribe
 Content-Type: application/json
 Authorization: Bearer valid-token
 
@@ -46,8 +46,8 @@ Authorization: Bearer valid-token
 }
 
 ### Test UnsubscribeHandler - Success
-DELETE http://localhost:8081/api/v1/resume/1
+DELETE http://localhost:8080/api/v1/resume/1
 Authorization: Bearer
 
 ### Test GoogleAuthHandler - Success
-GET http://localhost:8081/api/v1/auth/google
+GET http://localhost:8080/api/v1/auth/google
