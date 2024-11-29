@@ -50,7 +50,7 @@ func InitializeRoutes(r *gin.Engine, ah *auth.AuthHandler, rh *resume.ResumeHand
 
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
-		port = "8081" // configure this if needed
+		port = "8080" // configure this if needed
 	}
 	r.Run(fmt.Sprintf(":%s", port))
 }
