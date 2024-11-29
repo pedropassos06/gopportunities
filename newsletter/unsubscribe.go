@@ -37,7 +37,7 @@ func (h *NewsletterHandlerImpl) UnsubscribeHandler(ctx *gin.Context) {
 	}
 
 	// update record in db
-	if err := h.Usecase.Unsubscribe(subscription).Error; err != nil {
+	if err := h.Usecase.Unsubscribe(subscription); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "unable to unsubscribe")
 		return
 	}

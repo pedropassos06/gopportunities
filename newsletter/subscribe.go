@@ -40,7 +40,7 @@ func (h *NewsletterHandlerImpl) SubscribeHandler(ctx *gin.Context) {
 		Subscribed: true,
 	}
 
-	if err := h.Usecase.Subscribe(subscription).Error; err != nil {
+	if err := h.Usecase.Subscribe(subscription); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "Failed to subscribe")
 		return
 	}
