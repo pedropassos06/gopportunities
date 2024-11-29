@@ -43,7 +43,6 @@ func main() {
 	ginRouter := gin.Default()
 	// init specific handlers
 	authHandler := auth.NewAuthHandler()
-	resumeHandler := resume.NewResumeHandler(config.GetSQLite(), logger)
 
 	// init opening handler
 	openingRepo := opening.NewOpeningRepository(config.GetSQLite())
@@ -54,6 +53,11 @@ func main() {
 	newsletterRepo := newsletter.NewNewsletterRepository(config.GetSQLite())
 	newsletterUsecase := newsletter.NewNewsletterUsecase(newsletterRepo)
 	newsletterHandler := newsletter.NewNewsletterHandler(newsletterUsecase)
+
+	// init resume handler
+	resumeRepo := resume.NewResumeRepository(config.GetSQLite())
+	resumeUsecase := resume.NewResumeUsecase(resumeRepo)
+	resumeHandler := resume.NewResumeHandler(resumeUsecase)
 
 	// Initialize Router
 	router.InitializeRoutes(ginRouter, authHandler, resumeHandler, openingHandler, newsletterHandler)
