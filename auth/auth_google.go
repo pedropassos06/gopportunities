@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	userInfoEmailEndpoint   = "https://www.googleapis.com/oauth2/v2/userinfo"
-	userInfoProfileEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
+	userInfoEmailEndpoint   = "https://www.googleapis.com/auth/userinfo.email"
+	userInfoProfileEndpoint = "https://www.googleapis.com/auth/userinfo.profile"
 )
 
 func (h *AuthHandlerImpl) GoogleAuthHandler(ctx *gin.Context) {
