@@ -16,34 +16,23 @@ import (
 // @Produce json
 // @Tags Newsletter
 // @Param Authorization header string true "Bearer Token"
-// @Param request body NewsletterSubscriptionRequest true "Newsletter subscription details"
+// @Param request body schemas.NewsletterSubscription true "Newsletter subscription details"
 // @Success 200 {object} schemas.NewsletterSubscription
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
 // @Router /newsletter/subscribe [post]
 func (h *NewsletterHandlerImpl) SubscribeHandler(ctx *gin.Context) {
-	var request NewsletterSubscriptionRequest
+	var request schemas.NewsletterSubscription
 
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, "Invalid input")
 		return
 	}
 
-	if err := request.Validate(); err != nil {
-		utils.SendError(ctx, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	subscription := schemas.NewsletterSubscription{
-		UserID:     request.UserID,
-		Email:      request.Email,
-		Subscribed: true,
-	}
-
-	if err := h.Usecase.Subscribe(subscription); err != nil {
+	if err := h.Usecase.Subscribe(request); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, "Failed to subscribe")
 		return
 	}
 
-	utils.SendSuccess(ctx, "subscribe-handler", subscription)
+	utils.SendSuccess(ctx, "subscribe-handler", request)
 }

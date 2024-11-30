@@ -1,6 +1,9 @@
 package newsletter
 
-import "github.com/pedropassos06/gopportunities/schemas"
+import (
+	"github.com/pedropassos06/gopportunities/schemas"
+	"github.com/pedropassos06/gopportunities/utils"
+)
 
 type NewsletterUsecase interface {
 	Subscribe(subscription schemas.NewsletterSubscription) error
@@ -20,6 +23,9 @@ func NewNewsletterUsecase(repository NewsletterRepository) NewsletterUsecase {
 }
 
 func (u *NewsletterUsecaseImpl) Subscribe(subscription schemas.NewsletterSubscription) error {
+	if subscription.Email == "" {
+		return utils.ErrParamIsRequired("email", "string")
+	}
 	return u.Repository.Subscribe(subscription)
 }
 
