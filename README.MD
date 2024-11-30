@@ -4,11 +4,10 @@ The **Gopportunities API** is a RESTful web service designed to manage job oppor
 
 ### Features
 - **Job Opportunities**: Create, update, fetch, and delete job openings.
-- **Resumes Support**: Upload, manage, and link resumes to job applications.
-Newsletter 
+- **Resumes Support**: Upload, manage, and link resumes to job applications. 
 - **Newsletter**: Manage newsletter subscribers and send periodic updates.
 - **Authentication**: Secure API endpoints with authentication middleware.
-Swagger Documentation: Comprehensive API documentation generated with `swag`.
+- **Swagger Documentation**: Comprehensive API documentation generated with `swag`.
 
 ### Prerequisites
 - Go 1.22 or later
@@ -18,7 +17,7 @@ Swagger Documentation: Comprehensive API documentation generated with `swag`.
 ### Installation
 #### Clone repo
 ```
-git clone https://github.com/yourusername/gopportunities.git
+git clone https://github.com/pedropassos06/gopportunities.git
 cd gopportunities
 ```
 
