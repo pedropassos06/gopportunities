@@ -10,13 +10,18 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+var (
+	userInfoEmailEndpoint   = "https://www.googleapis.com/oauth2/v2/userinfo"
+	userInfoProfileEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
+)
+
 func (h *AuthHandlerImpl) GoogleAuthHandler(ctx *gin.Context) {
 	//configure google oauth2 settings
 	config := &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		RedirectURL:  os.Getenv("GOOGLE_REDIRECT_URL"),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
+		Scopes:       []string{userInfoProfileEndpoint, userInfoEmailEndpoint},
 		Endpoint:     google.Endpoint,
 	}
 
