@@ -27,13 +27,13 @@ func (h *OpeningHandlerImpl) ShowOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	uint64ID, err := utils.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, "id must be a number")
 		return
 	}
 
-	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
+	opening, err := h.Usecase.GetOpeningByID(uintID)
 	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, "Opening not found")
 		return

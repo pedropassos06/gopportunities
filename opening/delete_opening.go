@@ -28,21 +28,21 @@ func (h *OpeningHandlerImpl) DeleteOpeningHandler(ctx *gin.Context) {
 	}
 
 	// Convert the ID to a uint
-	uint64ID, err := utils.StringToUint(id)
+	uintID, err := utils.StringToUint(id)
 	if err != nil {
 		utils.SendError(ctx, http.StatusBadRequest, "id must be a number")
 		return
 	}
 
 	// Find opening
-	opening, err := h.Usecase.GetOpeningByID(uint(uint64ID))
+	opening, err := h.Usecase.GetOpeningByID(uintID)
 	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, fmt.Sprintf("opening with id: %s not found", id))
 		return
 	}
 
 	// Delete
-	if err = h.Usecase.DeleteOpening(uint(uint64ID)); err != nil {
+	if err = h.Usecase.DeleteOpening(uintID); err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, fmt.Sprintf("error deleting opening with id: %s", id))
 		return
 	}
