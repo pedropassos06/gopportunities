@@ -17,9 +17,10 @@ RUN go mod download
 # Copies all source code and files from local directory to the current 
 # working directory in the container
 COPY . .
+
 # Compiles the Go code and creates a binary file named gopportunities-api.
 # This binary will be placed in the /app directory.
-RUN go build -o gopportunities-api .
+RUN go build -o gopportunities-api ./cmd
 
 # Step 6: Create a minimal final image
 FROM alpine:latest
