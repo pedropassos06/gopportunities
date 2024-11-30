@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pedropassos06/gopportunities/auth"
 	"github.com/pedropassos06/gopportunities/config"
@@ -9,10 +11,6 @@ import (
 	"github.com/pedropassos06/gopportunities/resume"
 	"github.com/pedropassos06/gopportunities/router"
 	"github.com/pedropassos06/gopportunities/utils"
-)
-
-var (
-	dbPath = "./db/main.db"
 )
 
 func init() {
@@ -26,7 +24,7 @@ func main() {
 
 	// Create SQLite instance
 	sqlite := &config.SQLite{
-		Path:   dbPath,
+		Path:   os.Getenv("DB_PATH"),
 		Logger: logger,
 	}
 
