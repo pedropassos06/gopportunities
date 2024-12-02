@@ -20,6 +20,9 @@ func InitializeRoutes(r *gin.Engine, ah auth.AuthHandler, rh resume.ResumeHandle
 	basePath := "/api/v1"
 	docs.SwaggerInfo.BasePath = basePath
 
+	// CORS middleware
+	r.Use(middleware.CorsMiddleware())
+
 	// public routes
 	public := r.Group("/api/v1")
 	{
