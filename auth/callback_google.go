@@ -2,12 +2,12 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	schemas "github.com/pedropassos06/gopportunities/schemas"
 	utils "github.com/pedropassos06/gopportunities/utils"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -64,11 +64,10 @@ func (h *AuthHandlerImpl) GoogleCallbackHandler(ctx *gin.Context) {
 		return
 	}
 
-	// create token response
-	token := &schemas.Token{Token: jwt}
-
-	// send success
-	ctx.JSON(http.StatusOK, token)
+	// Redirect to frontend with the token
+	frontendURL := os.Getenv("FRONTEND_URL") // Ensure this is set to your frontend's URL (e.g., http://localhost:3000)
+	redirectURL := fmt.Sprintf("%s/callback?token=%s", frontendURL, jwt)
+	ctx.Redirect(http.StatusTemporaryRedirect, redirectURL)
 }
 
 // sets up google auth client configuration
