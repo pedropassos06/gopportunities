@@ -10,6 +10,7 @@ import (
 	"github.com/pedropassos06/gopportunities/opening"
 	"github.com/pedropassos06/gopportunities/resume"
 	"github.com/pedropassos06/gopportunities/router"
+	"github.com/pedropassos06/gopportunities/user"
 	"github.com/pedropassos06/gopportunities/utils"
 )
 
@@ -40,7 +41,13 @@ func main() {
 
 	ginRouter := gin.Default()
 	// init specific handlers
-	authHandler := auth.NewAuthHandler()
+	// user handler
+	userRepo := user.NewUserRepository(config.GetSQLite())
+	userUsecase := user.NewUserUsecase(userRepo)
+	userHandler := user.NewUserHandler(userUsecase)
+
+	// auth handler
+	authHandler := auth.NewAuthHandler(userUsecase)
 
 	// init opening handler
 	openingRepo := opening.NewOpeningRepository(config.GetSQLite())
@@ -58,5 +65,5 @@ func main() {
 	resumeHandler := resume.NewResumeHandler(resumeUsecase)
 
 	// Initialize Router
-	router.InitializeRoutes(ginRouter, authHandler, resumeHandler, openingHandler, newsletterHandler)
+	router.InitializeRoutes(ginRouter, authHandler, resumeHandler, openingHandler, newsletterHandler, userHandler)
 }
