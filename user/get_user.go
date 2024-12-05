@@ -29,7 +29,7 @@ func (h *UserHandlerImpl) GetUserHandler(ctx *gin.Context) {
 	}
 
 	// find user
-	user, err := h.usecase.GetUser(email)
+	user, err := h.Usecase.GetUser(email)
 	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, "user not found")
 		return
