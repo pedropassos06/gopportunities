@@ -28,14 +28,14 @@ func (h *UserHandlerImpl) DeleteUserHandler(ctx *gin.Context) {
 	}
 
 	// find user
-	user, err := h.usecase.GetUser(email)
+	user, err := h.Usecase.GetUser(email)
 	if err != nil {
 		utils.SendError(ctx, http.StatusNotFound, "user not found")
 		return
 	}
 
 	// delete user
-	err = h.usecase.DeleteUser(email)
+	err = h.Usecase.DeleteUser(email)
 	if err != nil {
 		utils.SendError(ctx, http.StatusInternalServerError, err.Error())
 		return
