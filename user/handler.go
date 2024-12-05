@@ -3,18 +3,17 @@ package user
 import "github.com/gin-gonic/gin"
 
 type UserHandler interface {
-	CreateUserHandler(ctx *gin.Context)
 	DeleteUserHandler(ctx *gin.Context)
 	GetUserHandler(ctx *gin.Context)
 	UpdateUserHandler(ctx *gin.Context)
 }
 
 type UserHandlerImpl struct {
-	usecase UserUsecase
+	Usecase UserUsecase
 }
 
-func NewUserHandler(usecase UserUsecase) *UserHandlerImpl {
+func NewUserHandler(usecase UserUsecase) UserHandler {
 	return &UserHandlerImpl{
-		usecase: usecase,
+		Usecase: usecase,
 	}
 }
