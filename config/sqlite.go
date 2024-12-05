@@ -50,7 +50,7 @@ func (s *SQLite) Connect() (*gorm.DB, error) {
 
 func (s *SQLite) Migrate(db *gorm.DB) error {
 	// Migrate schema
-	err := db.AutoMigrate(&schemas.Opening{}, &schemas.Resume{}, &schemas.NewsletterSubscription{})
+	err := db.AutoMigrate(&schemas.Opening{}, &schemas.Resume{}, &schemas.NewsletterSubscription{}, &schemas.User{})
 	if err != nil {
 		s.Logger.Errf("SQLite auto migrate error: %v", err)
 		return err
