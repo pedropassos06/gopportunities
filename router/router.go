@@ -11,11 +11,12 @@ import (
 	"github.com/pedropassos06/gopportunities/newsletter"
 	"github.com/pedropassos06/gopportunities/opening"
 	"github.com/pedropassos06/gopportunities/resume"
+	"github.com/pedropassos06/gopportunities/user"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func InitializeRoutes(r *gin.Engine, ah auth.AuthHandler, rh resume.ResumeHandler, oh opening.OpeningHandler, nh newsletter.NewsletterHandler) {
+func InitializeRoutes(r *gin.Engine, ah auth.AuthHandler, rh resume.ResumeHandler, oh opening.OpeningHandler, nh newsletter.NewsletterHandler, uh user.UserHandler) {
 	// define base path for our api
 	basePath := "/api/v1"
 	docs.SwaggerInfo.BasePath = basePath
